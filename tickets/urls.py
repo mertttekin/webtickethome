@@ -6,4 +6,8 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('home/', views.home, name="home"),
     path('tickets/', views.arizakayit, name="tickets"),
+    path('details/<int:id>', views.details, name="details"),
+    path('came/', views.came, name="came"),
 ]
+
+# path(url,foksiyon,path ismi)

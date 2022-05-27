@@ -19,3 +19,4 @@ class Paylasim(models.Model):
     gönderiKonu = models.CharField(max_length=100)
     gönderiAciklama = models.TextField()
     gönderiDurumu = models.BooleanField(default=False)
+    cameUrunumu = models.BooleanField(default=False)

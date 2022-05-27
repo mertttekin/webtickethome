@@ -15,7 +15,11 @@ def arizakayit(request):
         print("varan1")
         return render(request, "index.html")
     print("varan2")
-    return render(request, "tickets.html")
+    data = {
+        "paylasimlar": Paylasim.objects.all(),
+        "arizalar": Ariza.objects.all(),
+    }
+    return render(request, "tickets.html", data)
 
 
 def home(request):
@@ -25,6 +29,8 @@ def home(request):
     }
     return render(request, "index.html", data)
 
+# kullanılmayan bir fonksiyon (tickets)
+
 
 def tickets(request):
     data = {
@@ -32,3 +38,14 @@ def tickets(request):
         "arizalar": Ariza.objects.all(),
     }
     return render(request, "tickets.html", data)
+
+
+def details(request, id):
+    return render(request, "details.html", {"id": id})
+
+
+def came(request):
+    data = {
+        "paylasimlar": Paylasim.objects.all(),
+    }
+    return render(request, "came.html", data)
