@@ -1,0 +1,33 @@
+<form action="" method="POST"> 
+    {% csrf_token %} 
+    <h1>Lütfen Formu Doldurunuz</h1>
+    <div class="mb-3">
+      <label for="gelenAdSoyad" class="form-label">Ad Soyad</label>
+      <input type="text" name="gelenAdSoyad" class="form-control" id="gelenAdSoyad" placeholder="Mert Tekin">
+    </div>
+    <div class="mb-3">
+        <label for="gelenMail" class="form-label">Email adresi</label>
+        <input type="email" name="gelenMail" class="form-control" id="gelenMail" placeholder="name@example.com">
+      </div>
+
+      <div class="mb-3">
+        <label for="gelenTelefon" class="form-label">Telefon Numarası</label>
+        <input type="text" name="gelenTelefon" class="form-control" id="gelenTelefon" placeholder="0530247939">
+      </div>
+      <div class="mb-3">
+        <label for="gelenKonu" class="form-label">Konu</label>
+        <input type="text" name="gelenKonu" class="form-control" id="gelenTelefon" placeholder="PTS arızası">
+      </div>
+      <div class="mb-3">
+        <label for="gelenAciklama" class="form-label">Açıklama</label>
+        <textarea name="gelenAciklama" class="form-control"  id="gelenAciklama" rows="3"></textarea>
+      </div>
+
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit">Gönder</button>
+      </div>
+
+      <div class="alert alert-success" role="alert">
+        A simple success alert—check it out!
+      </div>
+</form>

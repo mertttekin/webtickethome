@@ -1,4 +1,5 @@
 {% extends "basee.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -6,31 +7,15 @@
 
     <div class="container mt-3">
         <div class="row">
-            <div class="col-2">
+            <div class="col-3">
+              {% include 'partials/_cameliste.html' %}
+            </div>
+            <div class="col-6">
+             {% include 'partials/_camecards.html' %}
                
             </div>
-            <div class="col-7">
-                <div class="card mb-3">
-                    <div class="row g-0">
-                      <div class="col-md-4">
-                        <img src="" class="img-fluid rounded-start" alt="...">
-                      </div>
-                      <div class="col-md-8">
-                        <div class="card-body">
-                            {%for pay in paylasimlar%}
-                                {%if pay.cameUrunumu %}
-                                <h5 class="card-title">{{pay.gönderiKonu}}</h5>
-                                <p class="card-text">{{pay.gönderiAciklama}}</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                {%endif%}
-                            {%endfor%}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            </div>
             <div class="col-3 mb-2">
-                
+              {% include 'partials/_sidebar.html' %}  
             </div>
         </div>
     </div>

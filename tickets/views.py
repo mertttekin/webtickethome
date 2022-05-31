@@ -9,8 +9,9 @@ def arizakayit(request):
         gelenAdSoyad1 = request.POST['gelenAdSoyad']
         gelenTelefon1 = request.POST['gelenTelefon']
         gelenAciklama1 = request.POST['gelenAciklama']
+        gelenKonu1 = request.POST['gelenKonu']
         gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
-                            gelenTelefon=gelenTelefon1, gelenAciklama=gelenAciklama1)
+                            gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1)
         gelenValues.save()
         print("varan1")
         return render(request, "index.html")
@@ -40,8 +41,12 @@ def tickets(request):
     return render(request, "tickets.html", data)
 
 
-def details(request, id):
-    return render(request, "details.html", {"id": id})
+def details(request, slug):
+    detayid = Paylasim.objects.get(slug=slug)
+    detay = {
+        "paylasimlar": Paylasim.objects.all(),
+    }
+    return render(request, "details.html", {"detayid": detayid})
 
 
 def came(request):
