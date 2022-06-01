@@ -1,5 +1,5 @@
 from django.contrib import admin
-from.models import Status, Ariza, Paylasim
+from.models import Status, Ariza, Paylasim, Category
 
 
 class TicketAdmin(admin.ModelAdmin):
@@ -9,7 +9,12 @@ class TicketAdmin(admin.ModelAdmin):
     readonly_fields = ("gelenAdSoyad",
                        "gelenMail", "gelenTelefon", "gelenAciklama",)
 
+# class PaylasimAdmin(admin.ModelAdmin):
+    # list_filter=()
+    # filtreleme olursa 165
+
 
 admin.site.register(Status)
 admin.site.register(Ariza, TicketAdmin)
 admin.site.register(Paylasim)
+admin.site.register(Category)
