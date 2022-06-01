@@ -1,4 +1,5 @@
 from turtle import mode, update
+from unicodedata import category
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
@@ -26,6 +27,19 @@ class Ariza(models.Model):
         return f"{self.gelenAdSoyad}"
 
 
+class Category(models.Model):
+    categoryName = models.CharField(max_length=100)
+    slug = models.SlugField(null=False, unique=True,
+                            db_index=True, blank=True, editable=False)
+
+    def __str__(self):
+        return f"{self.categoryName}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.categoryName)
+        super().save(*args, **kwargs)
+
+
 class Paylasim(models.Model):
     göndericiAdi = models.CharField(max_length=100)
     gönderiKonu = models.CharField(max_length=100)
@@ -35,6 +49,8 @@ class Paylasim(models.Model):
     cameUrunumu = models.BooleanField(default=False)
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.gönderiKonu}"

@@ -1,6 +1,7 @@
-from django.http import HttpResponseRedirect
+from unicodedata import category
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from . models import Paylasim, Ariza
+from . models import Category, Paylasim, Ariza
 
 
 def arizakayit(request):
@@ -51,6 +52,15 @@ def details(request, slug):
 
 def came(request):
     data = {
-        "paylasimlar": Paylasim.objects.all(),
+        "paylasimlar": Paylasim.objects.filter(cameUrunumu=True),
+        "category": Category.objects.all(),
     }
     return render(request, "came.html", data)
+
+
+def cameCategory(request, slug):
+    data2 = {
+        "paylasimlar": Paylasim.objects.filter(cameUrunumu=True, category__slug=slug),
+        "category": Category.objects.all(),
+    }
+    return render(request, "came.html", data2)
