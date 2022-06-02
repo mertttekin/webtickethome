@@ -24,6 +24,7 @@ import tickets
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("tickets.urls")),
+    path('account/', include("account.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # + static(settings.MEDIA_URL, documen_root=settings.MEDIA_ROOT)

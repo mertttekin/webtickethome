@@ -1,0 +1,25 @@
+{% load static %}
+
+{%for ar in arizalar%}
+
+
+<div class="card text-center">
+    <div class="card-header">
+        {{ar.gelenKonu}}
+    </div>
+    <div class="card-body">
+      <p class="card-title">{{ar.gelenKonu}}</p>
+      <p class="card-text">{{ar.gelenaciklama}}</p>
+      <hr>
+      <p class="card-text">Kimden: {{ar.gelenAdSoyad}}</p>
+      <p class="card-text">Mail: {{ar.gelenMail}}</p>
+      <p class="card-text">Telefon: {{ar.gelenTelefon}} </p>
+
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+    <div class="card-footer text-muted">
+    </div>
+  </div>
+
+
+{%endfor%}

@@ -1,7 +1,6 @@
 from unicodedata import category
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
 from . models import Category, Paylasim, Ariza
+from django.shortcuts import render
 
 
 def arizakayit(request):
@@ -64,3 +63,10 @@ def cameCategory(request, slug):
         "category": Category.objects.all(),
     }
     return render(request, "came.html", data2)
+
+
+def arizalar(request):
+    arizalar = {
+        "arizalar": Ariza.objects.all(),
+    }
+    return render(request, "arizalar.html", arizalar)
