@@ -1,5 +1,6 @@
 from turtle import mode, update
 from unicodedata import category
+from xml.parsers.expat import model
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
@@ -12,6 +13,23 @@ class Status(models.Model):
 # göndericiFoto/1.jpeg
 
 
+class Firma(models.Model):
+    FirmaName = models.CharField(max_length=100, default="Firmasız")
+    FirmaYetkilisi = models.CharField(max_length=50)
+    FirmaİletisimMail = models.CharField(max_length=50)
+    FirmaİletisimTelefon = models.CharField(max_length=50)
+
+    slug = models.SlugField(null=False,
+                            db_index=True, blank=True, editable=False)
+
+    def __str__(self):
+        return f"{self.FirmaName}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.FirmaName)
+        super().save(*args, **kwargs)
+
+
 class Ariza(models.Model):
 
     gelenMail = models.CharField(max_length=50)
@@ -20,11 +38,20 @@ class Ariza(models.Model):
     gelenTelefon = models.CharField(max_length=50)
     gelenKonu = models.CharField(max_length=50)
     gelenAciklama = RichTextField()
+    slug = models.SlugField(null=True,
+                            db_index=True, blank=True, editable=False)
+    firma_bilgi = models.ForeignKey(
+        Firma, null=True, on_delete=models.CASCADE)
+    #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
     # slug = models.SlugField(null=True, unique=True, db_index=True)
     # önce null False olursa migrationda sorun çıkıyor önce true ile nullar doldurulup sonra false çevirilmeli
 
     def __str__(self):
         return f"{self.gelenAdSoyad}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.gelenKonu)+"-"+str(self.id)
+        super().save(*args, **kwargs)
 
 
 class Category(models.Model):

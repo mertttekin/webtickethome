@@ -1,6 +1,7 @@
+from operator import ge
 from unicodedata import category
-from . models import Category, Paylasim, Ariza
-from django.shortcuts import render
+from . models import Category, Paylasim, Ariza, Firma
+from django.shortcuts import redirect, render
 
 
 def arizakayit(request):
@@ -66,7 +67,17 @@ def cameCategory(request, slug):
 
 
 def arizalar(request):
-    arizalar = {
-        "arizalar": Ariza.objects.all(),
-    }
-    return render(request, "arizalar.html", arizalar)
+
+    if request.user.is_authenticated:
+
+        arizalar = {
+            "arizalar": Ariza.objects.all(),
+            "arizaSayi": Ariza.objects.count(),
+            "firmalar": Firma.objects.all(),
+            "firmaSayi": Firma.objects.aggregate(),
+
+        }
+
+        return render(request, "arizalar.html", arizalar)
+    else:
+        return redirect("tickets")

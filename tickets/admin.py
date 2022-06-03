@@ -1,5 +1,5 @@
 from django.contrib import admin
-from.models import Status, Ariza, Paylasim, Category
+from.models import Firma, Status, Ariza, Paylasim, Category
 
 
 class TicketAdmin(admin.ModelAdmin):
@@ -18,3 +18,4 @@ admin.site.register(Status)
 admin.site.register(Ariza, TicketAdmin)
 admin.site.register(Paylasim)
 admin.site.register(Category)
+admin.site.register(Firma)
