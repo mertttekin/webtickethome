@@ -7,6 +7,7 @@ from xml.parsers.expat import model
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from PIL import Image
 
 
 class Status(models.Model):
@@ -77,10 +78,11 @@ class Paylasim(models.Model):
     göndericiAdi = models.CharField(max_length=100)
     gönderiKonu = models.CharField(max_length=100)
     gönderiAciklama = RichTextField()
-    gönderiFoto = models.ImageField(upload_to="Paylasim",blank=False,null=False)
+    gönderiFoto = models.ImageField(upload_to="Paylasim/",blank=True,null=True)
     gönderiDurumu = models.BooleanField(default=False)
     yazılımUrunumu = models.BooleanField(default=False)
     cameUrunumu = models.BooleanField(default=False)
+    sssmi = models.BooleanField(default=False)
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(

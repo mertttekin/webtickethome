@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from datetime import date
 from genericpath import exists
 from operator import ge
@@ -5,6 +6,7 @@ from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import redirect, render
 from django.db.models import F
+from .forms import ProductCreateForm
 
 
 def arizakayit(request):
@@ -126,6 +128,49 @@ def arızaFirma(request,slug):
         return redirect("tickets")
 
 def arizaDetay(request, slug):
-    detayid = Ariza.objects.get(slug=slug)
-    return render(request, "arizaDetay.html", {"detayid": detayid})
-    
+    if request.user.is_authenticated:
+        detayid = Ariza.objects.get(slug=slug)
+        return render(request, "arizaDetay.html", {"detayid": detayid})
+    else:
+        return redirect("tickets")
+
+
+def paylasimgir(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = ProductCreateForm(request.POST, request.FILES)
+            print("obje kayot")
+            if form.is_valid():
+                print("save öncesi")
+                form.save()
+                print("save attı")
+                return redirect("paylasimgir")
+            else:
+                print(form.errors.as_data()) # here you print errors to terminal
+        form=ProductCreateForm()
+        print("yeni girdi")
+        return render(request,"paylasimgir.html",{"form":form}) 
+    else:
+        return redirect("tickets")       
+
+# def paylasimgir(request):
+#     if request.user.is_authenticated:
+#         if request.method == 'POST':
+#             göndericiAdi1=request.POST['göndericiAdi']
+#             gönderiKonu1=request.POST['gönderiKonu']
+#             gönderiAcıklama1=request.POST['gönderiAcıklama']
+#             gönderiFoto1=request.FILES.get('images')
+#             gönderiDurumu1=request.POST.get('gönderiDurumu',False)
+#             gönderiCameUrunumu1=request.POST.get('gönderiCameUrunumu',False)
+#             gönderiYazılımUrunumu1=request.POST.get('gönderiYazılımUrunumu',False)
+#             gönderiSSSmi1=request.POST.get('gönderiSSSmi',False)
+#             categoryid = Category.objects.get(id=2) 
+
+#             gönderiObject.save()    
+#             return render(request, "paylasimgir.html" ,{"success": "kullanıcı adı veya parlola hatalı"})
+#         data2 = {
+#             "paylasimlarall": Paylasim.objects.all(),
+#         }
+#         return render(request,"paylasimgir.html",data2)
+#     else:
+#         return redirect("tickets")
