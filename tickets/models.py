@@ -2,6 +2,7 @@ from email.policy import default
 from sqlite3 import Timestamp
 from turtle import mode, update
 from unicodedata import category
+from venv import create
 from xml.parsers.expat import model
 from django.db import models
 from django.utils.text import slugify
@@ -44,8 +45,8 @@ class Ariza(models.Model):
                             db_index=True, blank=True, editable=False,unique=True)
     firma_bilgi = models.ForeignKey(
         Firma, null=True, on_delete=models.CASCADE)
-    last_update = models.DateTimeField(auto_now_add=False,auto_now=True)
-    Timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
+    update_time = models.DateTimeField(auto_now_add=False,auto_now=True)
+    create_time = models.DateTimeField(auto_now_add=True,auto_now=False)
     #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
     # slug = models.SlugField(null=True, unique=True, db_index=True)
     # önce null False olursa migrationda sorun çıkıyor önce true ile nullar doldurulup sonra false çevirilmeli

@@ -30,7 +30,7 @@ def arizakayit(request):
         return render(request, "index.html")
     print("varan2")
     data = {
-        "paylasimlar": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all(),
         "arizalar": Ariza.objects.all(),
     }
     return render(request, "tickets.html", data)
@@ -38,7 +38,7 @@ def arizakayit(request):
 
 def home(request):
     data = {
-        "paylasimlar": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all(),
         "arizalar": Ariza.objects.all(),
     }
     return render(request, "index.html", data)
@@ -48,7 +48,7 @@ def home(request):
 
 def tickets(request):
     data = {
-        "paylasimlar": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all(),
         "arizalar": Ariza.objects.all(),
     }
     return render(request, "tickets.html", data)
@@ -105,7 +105,6 @@ def arizalar(request):
 
         arizalar = {
             "arizalar": Ariza.objects.all(),
-            "date": Ariza.objects.annotate(authors__name=F('last_update')),
             "arizaSayi": Ariza.objects.count(),
             "firmalar": Firma.objects.all(),
             "firmaSayi": Firma.objects.aggregate(),
