@@ -9,13 +9,14 @@ class TicketAdmin(admin.ModelAdmin):
     readonly_fields = ("gelenAdSoyad",
                        "gelenMail", "gelenTelefon", "gelenAciklama",)
 
-# class PaylasimAdmin(admin.ModelAdmin):
-    # list_filter=()
-    # filtreleme olursa 165
+class PaylasimAdmin(admin.ModelAdmin):
+    list_display = ("göndericiAdi", "cameUrunumu","yazılımUrunumu", "gönderiDurumu","gönderiFoto")
+
+ 
 
 
 admin.site.register(Status)
 admin.site.register(Ariza, TicketAdmin)
-admin.site.register(Paylasim)
+admin.site.register(Paylasim,PaylasimAdmin)
 admin.site.register(Category)
 admin.site.register(Firma)

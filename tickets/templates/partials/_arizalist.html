@@ -1,5 +1,5 @@
 
-  <div class="list-group">
+  <div class="list-group mt-3">
     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
       <div class="d-flex w-20 justify-content-between">
         <h5 class="mb-1">Firma Liste</h5>
@@ -8,12 +8,14 @@
     </a>
     {% for fi in firmalar %}
 
-    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-      <div class="d-flex w-100 justify-content-between">
+    <a href="{% url 'arızaFirma' fi.slug %}" class="list-group-item list-group-item-action flex-column align-items-start ">
+      <div class="d-flex w-100 justify-content-between ">
         <h5 class="mb-1">{{fi.FirmaName}}</h5>
-        <small class="text-muted">3 days ago</small>
+
+        <small class="text-muted"></small>
+
         <span class="badge badge-primary badge-pill">{{arizaSayi}}</span>
-      </div>
+      </div>  
       <p class="mb-1">{{fi.FirmaYetkilisi}}</p>
       <small class="text-muted">Mail : {{fi.FirmaİletisimMail}}</small>
       <hr>

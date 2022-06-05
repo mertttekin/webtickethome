@@ -1,0 +1,37 @@
+{% extends "basee.html" %}
+
+{% block content %}
+
+    {% include 'partials/_navbar.html' %}
+
+    <div class="container mt-3">
+        <div class="row">
+
+            <div class="col-12">
+                
+
+
+
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-12">
+        <div class="card-body">
+                <h5 class="card-title">{{detayid.gönderiKonu}}</h5>
+                <p class="card-text">{{detayid.gönderiAciklama|safe}}</p>
+                <p class="card-text">{{detayid.göndericiAdi}}</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+    
+    {% endblock %}
+    
+

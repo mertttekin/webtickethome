@@ -1,0 +1,26 @@
+{% load static %}
+
+{%for pay in paylasimlar%}
+
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <a href="{% url 'details' pay.slug %}" title="">
+        
+        <img src="{{ pay.gönderiFoto.url }}" class="img-fluid rounded-start mt-3" alt="...">
+         
+      </a>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{pay.gönderiKonu}}</h5>
+        <p class="card-text">{{pay.gönderiAciklama|safe|slice:"0:200"}}</p>
+        <p class="card-text"><small class="text-muted">{{pay.göndericiAdi}}</small></p>
+        <a href="{% url 'details' pay.slug %}" class="stretched-link"></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{%endfor%}

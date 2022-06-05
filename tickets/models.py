@@ -1,3 +1,5 @@
+from email.policy import default
+from sqlite3 import Timestamp
 from turtle import mode, update
 from unicodedata import category
 from xml.parsers.expat import model
@@ -15,9 +17,9 @@ class Status(models.Model):
 
 class Firma(models.Model):
     FirmaName = models.CharField(max_length=100, default="Firmasız")
-    FirmaYetkilisi = models.CharField(max_length=50)
-    FirmaİletisimMail = models.CharField(max_length=50)
-    FirmaİletisimTelefon = models.CharField(max_length=50)
+    FirmaYetkilisi = models.CharField(max_length=50,null=True,blank=True)
+    FirmaİletisimMail = models.CharField(max_length=50,null=True,blank=True)
+    FirmaİletisimTelefon = models.CharField(max_length=50,null=True,blank=True)
 
     slug = models.SlugField(null=False,
                             db_index=True, blank=True, editable=False)
@@ -39,9 +41,11 @@ class Ariza(models.Model):
     gelenKonu = models.CharField(max_length=50)
     gelenAciklama = RichTextField()
     slug = models.SlugField(null=True,
-                            db_index=True, blank=True, editable=False)
+                            db_index=True, blank=True, editable=False,unique=True)
     firma_bilgi = models.ForeignKey(
         Firma, null=True, on_delete=models.CASCADE)
+    last_update = models.DateTimeField(auto_now_add=False,auto_now=True)
+    Timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
     #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
     # slug = models.SlugField(null=True, unique=True, db_index=True)
     # önce null False olursa migrationda sorun çıkıyor önce true ile nullar doldurulup sonra false çevirilmeli
@@ -58,6 +62,7 @@ class Category(models.Model):
     categoryName = models.CharField(max_length=100)
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
+    UrunTip = models.CharField(max_length=100,default="came")                    
 
     def __str__(self):
         return f"{self.categoryName}"
@@ -71,13 +76,14 @@ class Paylasim(models.Model):
     göndericiAdi = models.CharField(max_length=100)
     gönderiKonu = models.CharField(max_length=100)
     gönderiAciklama = RichTextField()
-    gönderiFoto = models.ImageField(upload_to="Paylasim")
+    gönderiFoto = models.ImageField(upload_to="Paylasim",blank=False,null=False)
     gönderiDurumu = models.BooleanField(default=False)
+    yazılımUrunumu = models.BooleanField(default=False)
     cameUrunumu = models.BooleanField(default=False)
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE)
+        Category, on_delete=models.CASCADE,blank=True)
 
     def __str__(self):
         return f"{self.gönderiKonu}"

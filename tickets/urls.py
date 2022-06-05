@@ -13,6 +13,10 @@ urlpatterns = [
     path('came/', views.came, name="came"),
     path('came/<slug:slug>', views.cameCategory, name="cameCategory"),
     path('arizalar/', views.arizalar, name="arizalar"),
+    path('yazilim/', views.yazilim, name="yazilim"),
+    path('yazilim/<slug:slug>', views.yazılımCategory, name="yazılımCategory"),
+    path('arizalar/<slug:slug>', views.arızaFirma, name="arızaFirma"),
+    path('ariza/detay/<slug:slug>', views.arizaDetay, name="arizaDetay"),
 ]
 
 # path(url,foksiyon,path ismi)
