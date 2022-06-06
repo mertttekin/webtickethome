@@ -1,0 +1,107 @@
+{% load static %}
+
+<div class="container">
+  <h2>Paylaşmak İçin forumu eksiksiz doldurunuz</h2>
+  <div class="row">
+    <div class="col">
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <table>
+          {{form.as_p}}
+        </table>
+        
+        <div class="col-12
+        mb-3">
+          <button class="btn btn-primary" type="submit">Gönder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <hr>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<form action="" method="POST"> 
+    {% csrf_token %} 
+    <h1>İçerik Oluştur / Güncelle</h1>
+    <hr>
+    <div class="mb-3">
+      <label for="göndericiAdi" class="form-label">Gönderici Ad Soyad</label>
+      <input type="text" name="göndericiAdi" class="form-control" id="göndericiAdi" placeholder="Mert Tekin">
+    </div>
+    <div class="mb-3">
+      <label for="gönderiKonu" class="form-label">Gönderi Konusu</label>
+      <input type="text" name="gönderiKonu" class="form-control" id="gönderiKonu" placeholder="Aksiyon Teknoloji">
+    </div>
+
+      <div class="mb-3">
+        <label for="gönderiAcıklama" class="form-label">Gönderi Aciklama</label>
+        <textarea name="gönderiAcıklama" class="form-control"  id="gönderiAcıklama" rows="3"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="images" class="form-label">Görsel Ekle</label>
+        <input required name="images" type="file" multiple class="form-control-file"  id="images" rows="3"></input>
+      </div>
+      
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="" id="gönderiDurumu">
+        <label class="form-check-label" for="gönderiDurumu">
+          Gönderi Yayınla
+        </label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="" id="gönderiCameUrunumu">
+        <label class="form-check-label" for="gönderiCameUrunumu">
+          Camede Yayınla
+        </label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="" id="gönderiYazılımUrunumu">
+        <label class="form-check-label" for="gönderiYazılımUrunumu">
+          Yazılım Altında Yayınla
+        </label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="" id="gönderiSSSmi">
+        <label class="form-check-label" for="gönderiSSSmi">
+          SSS de Yayınla
+        </label>
+      </div>
+
+      <div class="mb-3">
+        <label for="gelenAciklama" class="form-label">Yayınlanma Tarihi : </label>
+      </div>
+
+
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit">Gönder</button>
+      </div>
+
+
+
+</form>-->

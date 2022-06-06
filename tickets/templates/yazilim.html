@@ -1,0 +1,23 @@
+{% extends "basee.html" %}
+{% load static %}
+
+{% block content %}
+
+    {% include 'partials/_navbar.html' %}
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-3">
+              {% include 'partials/_yazılımlist.html' %}
+            </div>
+            <div class="col-6">
+             {% include 'partials/_yazılımcards.html' %}
+               
+            </div>
+            <div class="col-3 mb-2">
+              {% include 'partials/_sidebar.html' %}  
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

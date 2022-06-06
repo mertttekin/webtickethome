@@ -1,0 +1,38 @@
+{% load static %}
+
+{%for ar in arizalar%}
+
+
+<div class="card text-center mt-3">
+    <div class="card-header">
+        {{ar.gelenKonu}}
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ar.gelenAciklama|safe|slice:"0:200"}}.......</p>
+      <hr>
+      <p class="card-text">Kimden: {{ar.gelenAdSoyad}}</p>
+      <p class="card-text">Mail: {{ar.gelenMail}}</p>
+      <p class="card-text">Telefon: {{ar.gelenTelefon}} </p>
+      <div class="row">
+          <div class="col-6">
+            <div class="d-grid gap-2">
+              <a href="{% url 'arizaDetay' ar.slug %}" class="btn btn-primary">Ayrıntılar</a>
+            </div>
+              
+          </div>
+          <div class="col-6">
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-danger">Arşivle</button>
+            </div>
+          </div>
+      </div>
+
+      <div class="dropdown show">
+</div>
+    </div>
+    <div class="card-footer text-muted">
+    </div>
+  </div>
+
+
+{%endfor%}
