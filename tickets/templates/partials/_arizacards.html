@@ -3,14 +3,14 @@
 {%for ar in arizalar%}
 
 
-<div class="card text-center mt-3">
+<div class="card card-text mt-3">
     <div class="card-header">
       <div class="row">
         <div class="col-8">
-          <h6>{{ar.gelenKonu}}</h6>
+          <h5>{{ar.gelenKonu}}</h5>
         </div>
         <div class="col-4" >
-          {{ar.create_time}}
+          <small class="text-muted">{{ar.create_time}}</small>
         </div>
       </div>
         
@@ -18,17 +18,27 @@
     <div class="card-body">
       <p class="card-text">{{ar.gelenAciklama|safe|slice:"0:200"}}.......</p>
       <hr>
-      <p class="card-text">Kimden: {{ar.gelenAdSoyad}}</p>
-      <p class="card-text">Mail: {{ar.gelenMail}}</p>
-      <p class="card-text">Telefon: {{ar.gelenTelefon}} </p>
+        <ul>
+          <li>
+            <small class="text-muted">Kimden: {{ar.gelenAdSoyad}}</small>
+          </li>
+          <li>
+            <small class="text-muted">Mail: {{ar.gelenMail}}</small>
+          </li>
+          <li>
+            <small class="text-muted">Telefon: {{ar.gelenTelefon}}</small>
+          </li>         
+        </ul>
+
+
       <div class="row">
-          <div class="col-6">
+          <div class="col-2">
             <div class="d-grid gap-2">
               <a href="{% url 'arizaDetay' ar.slug %}" class="btn btn-primary">Ayrıntılar</a>
             </div>
               
           </div>
-          <div class="col-6">
+          <div class="col-2">
             <div class="d-grid gap-2">
               <button type="button" class="btn btn-danger">Arşivle</button>
             </div>
