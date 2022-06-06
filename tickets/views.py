@@ -8,7 +8,6 @@ from django.shortcuts import redirect, render
 from django.db.models import F
 from .forms import ProductCreateForm
 
-
 def arizakayit(request):
     if request.method == 'POST':
         gelenMail1 = request.POST['gelenMail']
@@ -141,15 +140,17 @@ def paylasimgir(request):
             form = ProductCreateForm(request.POST, request.FILES)
             print("obje kayot")
             if form.is_valid():
-                print("save öncesi")
                 form.save()
-                print("save attı")
                 return redirect("paylasimgir")
             else:
                 print(form.errors.as_data()) # here you print errors to terminal
         form=ProductCreateForm()
         print("yeni girdi")
-        return render(request,"paylasimgir.html",{"form":form}) 
+        data = {
+            "paylasimlarall": Paylasim.objects.all(),
+            "form":form,
+    }
+        return render(request,"paylasimgir.html",data) 
     else:
         return redirect("tickets")       
 

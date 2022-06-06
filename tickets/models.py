@@ -1,13 +1,17 @@
+from collections import UserList
 from email.policy import default
 from sqlite3 import Timestamp
 from turtle import mode, update
 from unicodedata import category
 from venv import create
 from xml.parsers.expat import model
+from django.conf import UserSettingsHolder
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from PIL import Image
+
+
 
 
 class Status(models.Model):
@@ -87,6 +91,7 @@ class Paylasim(models.Model):
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,blank=True)
+    göndericiUser = models.CharField(max_length=30,default="user.username")
 
     def __str__(self):
         return f"{self.gönderiKonu}"
