@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms import  widgets
 from django import forms
 from tickets.models import Paylasim
+from ckeditor.fields import RichTextField
 
 
 # class ProductCreateForm(forms.Form):
@@ -27,7 +28,17 @@ class ProductCreateForm(forms.ModelForm):
         error_messages ={
             "göndericiAdi":{
                 "required":"isim giriniz",
-            }
+            },
+            "gönderiKonu":{
+                "required":"Konu Giriniz",
+            },
+                "gönderiAciklama":{
+                "required":"Açıklama Giriniz",
+            },
+                "gönderiFoto":{
+                "required":"Açıklama Giriniz",
+            },
+
         }
         labels={
             "göndericiAdi":"Gönderici Adı",
@@ -36,4 +47,5 @@ class ProductCreateForm(forms.ModelForm):
         widgets= {
             "göndericiAdi": widgets.TextInput(attrs={"class":"form-control"}),
             "gönderiKonu": widgets.TextInput(attrs={"class":"form-control"}),
+
         }

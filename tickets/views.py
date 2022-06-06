@@ -4,7 +4,7 @@ from genericpath import exists
 from operator import ge
 from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from .forms import ProductCreateForm
 
@@ -105,7 +105,7 @@ def arizalar(request):
     if request.user.is_authenticated:
 
         arizalar = {
-            "arizalar": Ariza.objects.all(),
+            "arizalar": Ariza.objects.order_by('-create_time'),
             "arizaSayi": Ariza.objects.count(),
             "firmalar": Firma.objects.all(),
             "firmaSayi": Firma.objects.aggregate(),
@@ -153,6 +153,29 @@ def paylasimgir(request):
         return render(request,"paylasimgir.html",data) 
     else:
         return redirect("tickets")       
+
+def editt(request,slug):
+    if request.user.is_authenticated:
+        form = get_object_or_404(Paylasim, slug=slug)
+        if request.method == 'POST':
+            form = ProductCreateForm(request.POST, request.FILES,instance=form)
+            
+            if form.is_valid():
+                form.save()
+                return redirect("paylasimgir")
+            else:
+                print(form.errors.as_data()) # here you print errors to terminal
+        else:        
+            form=ProductCreateForm(instance=form)
+        data = {
+            "paylasimlarall": Paylasim.objects.filter(slug=slug),
+            "form":form,
+              }
+        return render(request,"paylasimgir.html",data) 
+    else:
+        return redirect("tickets")    
+
+
 
 # def paylasimgir(request):
 #     if request.user.is_authenticated:

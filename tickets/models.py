@@ -10,6 +10,7 @@ from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from PIL import Image
+from django.contrib.auth.models import User
 
 
 
@@ -90,8 +91,8 @@ class Paylasim(models.Model):
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,blank=True)
-    göndericiUser = models.CharField(max_length=30,default="user.username")
+        Category, on_delete=models.CASCADE,blank=True,editable=True)
+    göndericiUser = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.gönderiKonu}"

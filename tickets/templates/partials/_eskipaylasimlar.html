@@ -4,6 +4,7 @@
 <hr>
 
 {%for pay in paylasimlarall%}
+    {%if pay.göndericiUser_id == user.id %}
 
 <div class="card mb-3" style="max-width: 540px;">
   <div class="row g-0">
@@ -17,11 +18,12 @@
         <h5 class="card-title">{{pay.gönderiKonu}}</h5>
         <p class="card-text">{{pay.gönderiAciklama|safe|slice:"0:200"}}</p>
         <p class="card-text"><small class="text-muted">{{pay.göndericiAdi}}</small></p>
-        <a href="{% url 'details' pay.slug %}" class="stretched-link"></a>
+        <a href="{% url 'editt' pay.slug %}" class="btn btn-success">Düzenle</a>
+        <a href="{% url 'details' pay.slug %}" class="btn btn-primary">İncele</a>
       </div>
     </div>
   </div>
 </div>
-
+    {%endif%} 
 
 {%endfor%}
