@@ -11,8 +11,7 @@ from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from PIL import Image
 from django.contrib.auth.models import User
-
-
+from django.db.models import Count
 
 
 class Status(models.Model):
@@ -27,6 +26,7 @@ class Firma(models.Model):
     FirmaYetkilisi = models.CharField(max_length=50,null=True,blank=True)
     FirmaİletisimMail = models.CharField(max_length=50,null=True,blank=True)
     FirmaİletisimTelefon = models.CharField(max_length=50,null=True,blank=True)
+    #FirmaSayısı = Ariza.objects.aggregate(total_count=Count('id'))
 
     slug = models.SlugField(null=False,
                             db_index=True, blank=True, editable=False)
@@ -92,7 +92,7 @@ class Paylasim(models.Model):
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,blank=True,editable=True)
-    göndericiUser = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    göndericiUser_id = models.CharField(max_length=100,default=1)
 
     def __str__(self):
         return f"{self.gönderiKonu}"

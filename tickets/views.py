@@ -1,12 +1,14 @@
 from asyncio.windows_events import NULL
 from datetime import date
 from genericpath import exists
+from itertools import count
 from operator import ge
 from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from .forms import ProductCreateForm
+from django.db.models import Count
 
 def arizakayit(request):
     if request.method == 'POST':
@@ -108,13 +110,15 @@ def arizalar(request):
             "arizalar": Ariza.objects.order_by('-create_time'),
             "arizaSayi": Ariza.objects.count(),
             "firmalar": Firma.objects.all(),
-            "firmaSayi": Firma.objects.aggregate(),
+            "firmaSayi": Firma.objects.count(),
 
         }
         print(date)
         return render(request, "arizalar.html", arizalar)
     else:
         return redirect("tickets")
+
+
 
 def arızaFirma(request,slug):
     if request.user.is_authenticated:
@@ -175,8 +179,15 @@ def editt(request,slug):
     else:
         return redirect("tickets")    
 
-
-
+# def Firmasay():
+#     arizalar = {"arizalar":Ariza.objects.all()}
+#     firmalar = {"firmalar":Firma.objects.all()}
+#     a=0
+#     for fi in firmalar:
+#         for ar in arizalar:
+#             if fi.id == ar.firma_bilgi_id:
+#                 a=a+1
+#     firmaSayı = a
 # def paylasimgir(request):
 #     if request.user.is_authenticated:
 #         if request.method == 'POST':
