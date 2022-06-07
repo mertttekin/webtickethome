@@ -97,7 +97,7 @@ class Paylasim(models.Model):
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,blank=True,editable=True)
-    göndericiUser_id = models.CharField(max_length=100,default=1)
+    göndericiUser_id = models.CharField(max_length=100,default="1")
 
     def __str__(self):
         return f"{self.gönderiKonu}"
