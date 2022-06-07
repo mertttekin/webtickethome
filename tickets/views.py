@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from .forms import ProductCreateForm
 from django.db.models import Count
+from . forms import ArizaCevapForm
 
 def arizakayit(request):
     if request.method == 'POST':
@@ -111,6 +112,7 @@ def arizalar(request):
             "arizaSayi": Ariza.objects.count(),
             "firmalar": Firma.objects.all(),
             "firmaSayi": Firma.objects.count(),
+    
 
         }
         print(date)
@@ -132,8 +134,20 @@ def arızaFirma(request,slug):
 
 def arizaDetay(request, slug):
     if request.user.is_authenticated:
+        form = get_object_or_404(Ariza, slug=slug)
+            
+        if request.method == "POST":
+            form =ArizaCevapForm(request.POST,instance=form)
+            print("test")
+            if form.is_valid():
+                form.save()
+                return redirect("arizalar")
+            else:
+                print(form.errors.as_data()) # here you print errors to terminal         
+            return redirect("tickets")
         detayid = Ariza.objects.get(slug=slug)
         return render(request, "arizaDetay.html", {"detayid": detayid})
+
     else:
         return redirect("tickets")
 
@@ -178,6 +192,8 @@ def editt(request,slug):
         return render(request,"paylasimgir.html",data) 
     else:
         return redirect("tickets")    
+
+
 
 # def Firmasay():
 #     arizalar = {"arizalar":Ariza.objects.all()}

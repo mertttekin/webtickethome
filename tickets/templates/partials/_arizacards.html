@@ -3,7 +3,7 @@
 {%for ar in arizalar%}
 
 
-<div class="card card-text mt-3">
+<div class="{%if ar.ArizaCozumu == 'Girilmedi' %} cardd {% else %} card {%endif%} card-text mt-3">
     <div class="card-header">
       <div class="row">
         <div class="col-8">
@@ -49,8 +49,23 @@
 </div>
     </div>
     <div class="card-footer text-muted">
+      {%if ar.ArizaCozumu == 'Girilmedi' %}
+      <p>Çözüm Girilmedi</p>
+      {% else %}
+      <p>Çözüm Girildi : {{ar.ArizaCozumu|safe|slice:"0:20"}}.... </p>
+      {% endif %}
+      
     </div>
   </div>
 
 
 {%endfor%}
+
+<style>
+  .cardd {
+      position: relative;
+      background-color: rgb(205, 211, 253);
+
+
+  }
+</style>

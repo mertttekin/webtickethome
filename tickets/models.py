@@ -1,7 +1,8 @@
 from collections import UserList
+from datetime import date
 from email.policy import default
 from sqlite3 import Timestamp
-from turtle import mode, update
+from turtle import mode, st, update
 from unicodedata import category
 from venv import create
 from xml.parsers.expat import model
@@ -12,6 +13,7 @@ from ckeditor.fields import RichTextField
 from PIL import Image
 from django.contrib.auth.models import User
 from django.db.models import Count
+from pkg_resources import safe_name
 
 
 class Status(models.Model):
@@ -53,6 +55,7 @@ class Ariza(models.Model):
         Firma, null=True, on_delete=models.CASCADE)
     update_time = models.DateTimeField(auto_now_add=False,auto_now=True)
     create_time = models.DateTimeField(auto_now_add=True,auto_now=False)
+    ArizaCozumu = RichTextField(default="Girilmedi")
     #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
     # slug = models.SlugField(null=True, unique=True, db_index=True)
     # önce null False olursa migrationda sorun çıkıyor önce true ile nullar doldurulup sonra false çevirilmeli
@@ -61,9 +64,10 @@ class Ariza(models.Model):
         return f"{self.gelenAdSoyad}"
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.gelenKonu)+"-"+str(self.id)
-        super().save(*args, **kwargs)
-
+            super(Ariza, self).save(*args, **kwargs)
+            if not self.slug:
+                self.slug = slugify(self.gelenKonu) + "-" + str(self.id)
+                self.save()    
 
 class Category(models.Model):
     categoryName = models.CharField(max_length=100)
@@ -78,6 +82,7 @@ class Category(models.Model):
         self.slug = slugify(self.categoryName)
         super().save(*args, **kwargs)
 
+        
 
 class Paylasim(models.Model):
     göndericiAdi = models.CharField(max_length=100)

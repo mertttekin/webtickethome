@@ -1,4 +1,4 @@
-from dataclasses import field
+from dataclasses import field, fields
 from pyexpat import model
 from tkinter import Widget
 from turtle import width
@@ -6,7 +6,7 @@ from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms import  widgets
 from django import forms
-from tickets.models import Paylasim
+from tickets.models import Ariza, Paylasim
 from ckeditor.fields import RichTextField
 
 
@@ -19,7 +19,6 @@ from ckeditor.fields import RichTextField
 #     yazılımUrunumu= forms.BooleanField(required=False)
 #     cameUrunumu= forms.BooleanField(required=False)
 #     sssmi= forms.BooleanField(required=False)
-
 
 class ProductCreateForm(forms.ModelForm):
     class Meta:
@@ -49,3 +48,9 @@ class ProductCreateForm(forms.ModelForm):
             "gönderiKonu": widgets.TextInput(attrs={"class":"form-control"}),
 
         }
+
+
+class ArizaCevapForm(forms.ModelForm):
+    class Meta:
+        model=Ariza
+        fields=['ArizaCozumu']
