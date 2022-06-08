@@ -56,6 +56,7 @@ class Ariza(models.Model):
     update_time = models.DateTimeField(auto_now_add=False,auto_now=True)
     create_time = models.DateTimeField(auto_now_add=True,auto_now=False)
     ArizaCozumu = RichTextField(default="Girilmedi")
+    Arsivmi = models.BooleanField(default=False)
     #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
     # slug = models.SlugField(null=True, unique=True, db_index=True)
     # önce null False olursa migrationda sorun çıkıyor önce true ile nullar doldurulup sonra false çevirilmeli

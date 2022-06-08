@@ -1,4 +1,5 @@
 from dataclasses import field, fields
+from email.policy import default
 from pyexpat import model
 from tkinter import Widget
 from turtle import width
@@ -6,8 +7,10 @@ from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms import  widgets
 from django import forms
+from tickets import models
 from tickets.models import Ariza, Paylasim
 from ckeditor.fields import RichTextField
+from django.db import models
 
 
 # class ProductCreateForm(forms.Form):
@@ -54,3 +57,9 @@ class ArizaCevapForm(forms.ModelForm):
     class Meta:
         model=Ariza
         fields=['ArizaCozumu']
+
+class ArizaArsiv(forms.ModelForm):
+    class Meta:
+        model=Ariza
+        fields=['Arsivmi']
+        Arsivmi = True

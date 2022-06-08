@@ -19,6 +19,7 @@ urlpatterns = [
     path('ariza/detay/<slug:slug>', views.arizaDetay, name="arizaDetay"),
     path('paylasimgir/', views.paylasimgir, name="paylasimgir"),
     path('paylasimgir/editt/<slug:slug>', views.editt, name="editt"),
+    path('arizalar/arsiv/ekle/<slug:slug>', views.ArsiveEkle, name="ArsiveEkle"),
 ]
 
 # path(url,foksiyon,path ismi)

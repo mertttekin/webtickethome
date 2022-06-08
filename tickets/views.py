@@ -7,7 +7,7 @@ from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
-from .forms import ProductCreateForm
+from .forms import ProductCreateForm,ArizaArsiv
 from django.db.models import Count
 from . forms import ArizaCevapForm
 
@@ -121,6 +121,27 @@ def arizalar(request):
         return redirect("tickets")
 
 
+def ArsiveEkle(request,slug):
+    if request.user.is_authenticated:
+        form2 = get_object_or_404(Ariza, slug=slug)
+        if request.method == 'POST':
+            print("test")
+            return redirect("arsiveklendi")  
+            # if form.Arsivmi == 'False':
+            #     form.Arsivmi.update(True)         
+            #     if form.is_valid():
+            #         form.save()
+            #         return redirect("arizalar")
+            #     else:
+            #         print(form.errors.as_data())
+        else:
+            arizalar = {
+                    "form":form2,
+                         }   
+            return render(request,"arizalar.html",arizalar)                          
+    else:
+        return redirect("arizalar")   
+
 
 def arızaFirma(request,slug):
     if request.user.is_authenticated:
@@ -194,6 +215,7 @@ def editt(request,slug):
         return render(request,"paylasimgir.html",data) 
     else:
         return redirect("tickets")    
+
 
 
 
