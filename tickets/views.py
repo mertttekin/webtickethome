@@ -24,7 +24,7 @@ def arizakayit(request):
             gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
                             gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1,firma_bilgi_id=firmaid.id)
         else:
-            firmaValues=Firma(FirmaName =FirmaName1 )
+            firmaValues=Firma(FirmaName = FirmaName1.upper())
             firmaValues.save()
             firmaid = firmaValues.id
             gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
@@ -110,7 +110,7 @@ def arizalar(request):
         arizalar = {
             "arizalar": Ariza.objects.order_by('-create_time'),
             "arizaSayi": Ariza.objects.count(),
-            "firmalar": Firma.objects.all(),
+            "firmalar": Firma.objects.order_by('FirmaName'),
             "firmaSayi": Firma.objects.count(),
     
 
@@ -126,8 +126,10 @@ def arızaFirma(request,slug):
     if request.user.is_authenticated:
         arizalar={
             "arizalar":Ariza.objects.filter(firma_bilgi__slug=slug),
-            "firmalar": Firma.objects.all(),
+            "firmalar": Firma.objects.order_by('FirmaName'),
+            "firmabaslink2": Firma.objects.get(slug=slug),
         }
+        
         return render(request,"arizalar.html",arizalar)
     else:
         return redirect("tickets")

@@ -1,12 +1,16 @@
 {% load static %}
 
-{%for ar in arizalar%}
 
 
+
+    <h3 class="bas text-center mt-3"> {{firmabaslink2.FirmaName}}</h3>
+
+  {%for ar in arizalar%}
 <div class="{%if ar.ArizaCozumu == 'Girilmedi' %} cardd {% else %} card {%endif%} card-text mt-3">
     <div class="card-header">
       <div class="row">
         <div class="col-8">
+          <h1> {{arizalar.gelenKonu}}</h1>
           <h5>{{ar.gelenKonu}}</h5>
         </div>
         <div class="col-4" >
@@ -64,8 +68,20 @@
 <style>
   .cardd {
       position: relative;
-      background-color: rgb(205, 211, 253);
+      background-color: rgba(39, 164, 180, 0.3);
+      border-radius: 16px;
+  }
+</style>
 
+<style>
+  .bas {
+    
+      border-radius: 6px;     
+      position: relative;
+      background-color: rgb(13,110,253);
+      margin-bottom: 2px;
+      padding-bottom: 4px;
+      color: rgb(255, 255, 255);
 
   }
 </style>

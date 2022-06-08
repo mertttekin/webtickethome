@@ -70,7 +70,7 @@ class Ariza(models.Model):
                 self.save()    
 
 class Category(models.Model):
-    categoryName = models.CharField(max_length=100)
+    categoryName = models.CharField(max_length=100,default="Genel")
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     UrunTip = models.CharField(max_length=100,default="came")                    
@@ -88,7 +88,7 @@ class Paylasim(models.Model):
     göndericiAdi = models.CharField(max_length=100)
     gönderiKonu = models.CharField(max_length=100)
     gönderiAciklama = RichTextField()
-    gönderiFoto = models.ImageField(upload_to="Paylasim/",blank=True,null=True)
+    gönderiFoto = models.ImageField(upload_to="Paylasim/",blank=True,null=True,default="Paylasim/akslogo.png")
     gönderiDurumu = models.BooleanField(default=False)
     yazılımUrunumu = models.BooleanField(default=False)
     cameUrunumu = models.BooleanField(default=False)
@@ -96,12 +96,14 @@ class Paylasim(models.Model):
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,blank=True,editable=True)
+        Category, on_delete=models.CASCADE,blank=True,editable=True,default=9)
     göndericiUser_id = models.CharField(max_length=100,default="1")
 
     def __str__(self):
         return f"{self.gönderiKonu}"
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.gönderiKonu)
-        super().save(*args, **kwargs)
+            super(Paylasim, self).save(*args, **kwargs)
+            if not self.slug:
+                self.slug = slugify(self.gönderiKonu) + "-" + str(self.id)
+                self.save()     
