@@ -1,0 +1,41 @@
+{% extends "basee.html" %}
+
+{% block content %}
+{% csrf_token %} 
+    {% include 'partials/_navbar.html' %}
+
+    
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-1">
+               
+            </div>
+            <div class="col-10">
+                <form action="">
+                <div class="card text-center">
+                    <div class="card-header">
+           
+                        <h5 class="text-center">Bu Arizayı Arşive Eklemek İstediğinizden Emin Misiniz ?</h5>
+
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            
+                            <h5 class="text-justify">{{arizalar.gelenKonu}}</h5>
+                            <p class="card-text">{{arizalar.gelenAciklama|safe|slice:"0:200"}}.....</p>
+                            <button class="btn btn-danger" type="submit" id="basicAlert">Bu Arizayı Arşive Kaldır</button>
+                            <a href="#" class="btn btn-primary">Arizalara Dön</a>
+                         </form>
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="col-1 mb-2">
+              
+            </div>
+        </div>
+    </div>
+    
+    {% endblock %}
+    
+

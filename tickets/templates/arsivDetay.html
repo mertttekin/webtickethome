@@ -1,0 +1,70 @@
+{% extends "basee.html" %}
+
+{% block content %}
+
+    {% include 'partials/_navbar.html' %}
+
+    <div class="container mt-3">
+        <div class="row">
+
+            <div class="col-12">
+              <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-12">
+                      <div class="card-body">
+                              <h5 class="card-title">{{detayid.gelenKonu}}</h5>
+                              <hr>
+                              <p class="card-text">{{detayid.gelenAciklama|safe}}</p>
+                              <hr>
+                              <p class="card-text">{{detayid.göndericiAdi}}</p>
+                              <p class="card-text">Kimden: {{detayid.gelenAdSoyad}}</p>
+                              <p class="card-text">Mail: {{detayid.gelenMail}}</p>
+                              <p class="card-text">Telefon: {{detayid.gelenTelefon}} </p>
+                              <p class="card-text"><small class="text-muted">{{detayid.create_time}}</small></p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-12">
+            <div class="card mb-3">
+                <div class="row g-0">
+                  <div class="col-md-12">
+                    <div class="card-body">
+                            
+                            {% if detayid.ArizaCozumu == "" %}
+                            <h5 class="card-title">Henuz Çözüm Girilmedi</h5>
+                             {% else %}
+                            
+                             <h5 class="card-title">Cevap</h5>                
+                             <p class="card-text"> {{detayid.ArizaCozumu}}</p>                           
+                             <p class="card-text"> <small class="text-muted">{{detayid.update_time}}</p>
+                            {% endif %}
+                  </div>
+                </div>
+              </div>
+          </div>
+
+      </div>
+        <form action="" method="POST">
+          {% csrf_token %} 
+          <div class="mb-3">
+            <label for="ArizaCozumu" class="form-label">Çözümümüz</label>
+            <textarea class="form-control" name="ArizaCozumu" id="ArizaCozumu"> </textarea>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-primary" type="submit">Kaydet</button>
+          </div>
+        </form>
+
+    </div>
+    
+    {% endblock %}
+    
+

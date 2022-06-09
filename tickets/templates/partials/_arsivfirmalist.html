@@ -1,0 +1,41 @@
+<div class="list-group">
+    <a href="#" class="list-group-item list-group-item-danger flex-column align-items-start ">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">Firma Liste</h5>
+        <span class="badge badge-secondary badge-pill">{{arizaSayi}}</span>
+      </div>
+    </a>
+    {% for fi in firmalar %}
+
+    <a href="{% url 'arsivFirma' fi.slug %}" class="list-group-item list-group-item-action flex-column align-items-start ">
+      <div class="d-flex w-100 justify-content-between ">
+        <h5 class="mb-1">{{fi.FirmaName}}</h5>
+
+        <small class="text-muted"></small>
+
+        <span class="badge badge-primary badge-pill">{{ id.count }}</span>
+      </div>  
+      <p class="mb-1">{{fi.FirmaYetkilisi}}</p>
+      <ul>
+        <small class="text-muted">Mail : {{fi.FirmaİletisimMail}}</small>
+      </ul>
+      <ul>
+        <small class="text-muted">Telefon : {{fi.FirmaİletisimTelefon}}</small>
+      </ul>      
+
+    </a>
+    {% endfor %}
+  </div>
+
+  <style>
+    .badge {
+        position: relative;
+        background-color: rgb(190, 37, 70);
+        shape-margin: 20px;
+        text-align: center;
+        size: 20px;
+        max-width: 20px;
+        max-height: 20px;
+        padding-right: 25px;
+    }
+</style>

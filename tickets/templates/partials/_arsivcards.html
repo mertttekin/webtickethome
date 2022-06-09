@@ -2,7 +2,7 @@
 
 {% for msg in messages %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>   {{msg}}  </strong> Arşive Eklenmiştir .
+    <strong>   {{msg}}  </strong> Arşivden Kaldırılmıştır .
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   {%endfor%}
@@ -54,7 +54,7 @@
                 {% csrf_token %} 
                 <div class="col-12">
 
-                  <a href="{% url 'ArsiveEkle' ar.slug %}" class="btn btn-danger">Arşive Ekle</a>
+                  <a href="{% url 'arsivdenCikar' ar.slug %}" class="btn btn-danger">Arşivden Kaldır</a>
                 </div>
               </form>            
             </div>
@@ -90,10 +90,11 @@
     
       border-radius: 6px;     
       position: relative;
-      background-color: rgb(13,110,253);
+      background-color: rgb(238, 8, 8, 0.623);
       margin-bottom: 2px;
       padding-bottom: 4px;
       color: rgb(255, 255, 255);
 
   }
 </style>
+

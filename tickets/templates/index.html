@@ -10,7 +10,11 @@
                
             </div>
             <div class="col-6">
+                {% for msg in messages %}
+                {{msg}}
                 
+                {%endfor%}
+
             </div>
             <div class="col-3 mb-2">
                 {% include 'partials/_sidebar.html' %}

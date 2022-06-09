@@ -3,6 +3,7 @@ from datetime import date
 from genericpath import exists
 from itertools import count
 from operator import ge
+from tkinter import E
 from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import get_object_or_404, redirect, render
@@ -10,6 +11,7 @@ from django.db.models import F
 from .forms import ProductCreateForm,ArizaArsiv
 from django.db.models import Count
 from . forms import ArizaCevapForm
+from django.contrib import messages
 
 def arizakayit(request):
     if request.method == 'POST':
@@ -30,8 +32,9 @@ def arizakayit(request):
             gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
                                 gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1,firma_bilgi_id=firmaid)
         gelenValues.save()
+        messages.success(request,"Arıza Kaydınız Alınmıştır")
         print("varan1")
-        return render(request, "index.html")
+        return render(request, "tickets.html")
     print("varan2")
     data = {
         "paylasimlarall": Paylasim.objects.all(),
@@ -41,6 +44,8 @@ def arizakayit(request):
 
 
 def home(request):
+
+    messages.success(request,"Arşive Eklenmiştir")
     data = {
         "paylasimlarall": Paylasim.objects.all(),
         "arizalar": Ariza.objects.all(),
@@ -108,46 +113,27 @@ def arizalar(request):
     if request.user.is_authenticated:
 
         arizalar = {
-            "arizalar": Ariza.objects.order_by('-create_time'),
-            "arizaSayi": Ariza.objects.count(),
-            "firmalar": Firma.objects.order_by('FirmaName'),
+            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=False),
+            "arizaSayi": Ariza.objects.filter(Arsivmi=False).count(),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =False).distinct(),
             "firmaSayi": Firma.objects.count(),
-    
+    #        Article.objects.filter(reporter__first_name='John')
+    #     QuerySet [<Article: John's second story>, <Article: This is a test>]>
 
         }
-        print(date)
         return render(request, "arizalar.html", arizalar)
     else:
         return redirect("tickets")
 
 
-def ArsiveEkle(request,slug):
-    if request.user.is_authenticated:
-        form2 = get_object_or_404(Ariza, slug=slug)
-        if request.method == 'POST':
-            print("test")
-            return redirect("arsiveklendi")  
-            # if form.Arsivmi == 'False':
-            #     form.Arsivmi.update(True)         
-            #     if form.is_valid():
-            #         form.save()
-            #         return redirect("arizalar")
-            #     else:
-            #         print(form.errors.as_data())
-        else:
-            arizalar = {
-                    "form":form2,
-                         }   
-            return render(request,"arizalar.html",arizalar)                          
-    else:
-        return redirect("arizalar")   
+
 
 
 def arızaFirma(request,slug):
     if request.user.is_authenticated:
         arizalar={
-            "arizalar":Ariza.objects.filter(firma_bilgi__slug=slug),
-            "firmalar": Firma.objects.order_by('FirmaName'),
+            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=False,firma_bilgi__slug=slug),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =False).distinct(),
             "firmabaslink2": Firma.objects.get(slug=slug),
         }
         
@@ -216,7 +202,69 @@ def editt(request,slug):
     else:
         return redirect("tickets")    
 
+def ArsiveEkle(request,slug):
+    if request.user.is_authenticated:
+        form = get_object_or_404(Ariza, slug=slug)
+        if form.Arsivmi == False:  
+            form.Arsivmi = True
+            form.save()
+            messages.success(request,form.gelenKonu)
+            print("test")
+            return redirect("arizalar")
 
+        data2 = {
+            "arizalar": Ariza.objects.get(slug=slug),
+             "form":form,
+        }
+        return render(request,"arsivekaldir.html",data2)                          
+    else:
+        return redirect("tickets")
+
+def arsiv(request):
+    if request.user.is_authenticated:
+        arizalar = {
+            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=True),
+            "arizaSayi": Ariza.objects.filter(Arsivmi=True).count(),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =True).distinct(),
+            "firmaSayi": Firma.objects.count(),
+    #        Article.objects.filter(reporter__first_name='John')
+    #     QuerySet [<Article: John's second story>, <Article: This is a test>]>
+
+        }
+        return render(request,"arsiv.html",arizalar)
+    else:
+        return redirect("tickets")
+
+def arsivFirma(request,slug):
+    if request.user.is_authenticated:
+        arizalar={
+            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=True,firma_bilgi__slug=slug),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =True).distinct(),
+            "firmabaslink2": Firma.objects.get(slug=slug),
+        }
+        
+        return render(request,"arsiv.html",arizalar)
+    else:
+        return redirect("tickets")
+
+
+def arsivdenCikar(request,slug):
+    if request.user.is_authenticated:
+        form = get_object_or_404(Ariza, slug=slug)
+        if form.Arsivmi == True:  
+            form.Arsivmi = False
+            form.save()
+            messages.success(request,form.gelenKonu)
+            print("test")
+            return redirect("arsiv")
+
+        data2 = {
+            "arizalar": Ariza.objects.get(slug=slug),
+             "form":form,
+        }
+        return render(request,"arsivekaldir.html",data2)                          
+    else:
+        return redirect("tickets")
 
 
 # def Firmasay():

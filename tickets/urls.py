@@ -20,6 +20,8 @@ urlpatterns = [
     path('paylasimgir/', views.paylasimgir, name="paylasimgir"),
     path('paylasimgir/editt/<slug:slug>', views.editt, name="editt"),
     path('arizalar/arsiv/ekle/<slug:slug>', views.ArsiveEkle, name="ArsiveEkle"),
-]
+    path('arsiv/',views.arsiv,name="arsiv"),
+    path('arsiv/<slug:slug>',views.arsivFirma,name="arsivFirma"),
+    path('arsiv/arsivdencikar/<slug:slug>',views.arsivdenCikar,name="arsivdenCikar"),]
 
 # path(url,foksiyon,path ismi)
