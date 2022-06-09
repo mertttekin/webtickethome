@@ -266,6 +266,10 @@ def arsivdenCikar(request,slug):
     else:
         return redirect("tickets")
 
+def sss(request):
+    pass
+            
+
 
 # def Firmasay():
 #     arizalar = {"arizalar":Ariza.objects.all()}

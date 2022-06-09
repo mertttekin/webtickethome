@@ -25,9 +25,10 @@ class Status(models.Model):
 
 class Firma(models.Model):
     FirmaName = models.CharField(max_length=100, default="Firmasız")
-    FirmaYetkilisi = models.CharField(max_length=50,null=True,blank=True)
-    FirmaİletisimMail = models.CharField(max_length=50,null=True,blank=True)
-    FirmaİletisimTelefon = models.CharField(max_length=50,null=True,blank=True)
+    FirmaYetkilisi = models.CharField(max_length=50, null=True, blank=True)
+    FirmaİletisimMail = models.CharField(max_length=50, null=True, blank=True)
+    FirmaİletisimTelefon = models.CharField(
+        max_length=50, null=True, blank=True)
     #FirmaSayısı = Ariza.objects.aggregate(total_count=Count('id'))
 
     slug = models.SlugField(null=False,
@@ -50,11 +51,11 @@ class Ariza(models.Model):
     gelenKonu = models.CharField(max_length=50)
     gelenAciklama = RichTextField()
     slug = models.SlugField(null=True,
-                            db_index=True, blank=True, editable=False,unique=True)
+                            db_index=True, blank=True, editable=False, unique=True)
     firma_bilgi = models.ForeignKey(
         Firma, null=True, on_delete=models.CASCADE)
-    update_time = models.DateTimeField(auto_now_add=False,auto_now=True)
-    create_time = models.DateTimeField(auto_now_add=True,auto_now=False)
+    update_time = models.DateTimeField(auto_now_add=False, auto_now=True)
+    create_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     ArizaCozumu = RichTextField(default="Girilmedi")
     Arsivmi = models.BooleanField(default=False)
     #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
@@ -65,16 +66,17 @@ class Ariza(models.Model):
         return f"{self.gelenAdSoyad}"
 
     def save(self, *args, **kwargs):
-            super(Ariza, self).save(*args, **kwargs)
-            if not self.slug:
-                self.slug = slugify(self.gelenKonu) + "-" + str(self.id)
-                self.save()    
+        super(Ariza, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.gelenKonu) + "-" + str(self.id)
+            self.save()
+
 
 class Category(models.Model):
-    categoryName = models.CharField(max_length=100,default="Genel")
+    categoryName = models.CharField(max_length=100, default="Genel")
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
-    UrunTip = models.CharField(max_length=100,default="came")                    
+    UrunTip = models.CharField(max_length=100, default="came")
 
     def __str__(self):
         return f"{self.categoryName}"
@@ -83,13 +85,13 @@ class Category(models.Model):
         self.slug = slugify(self.categoryName)
         super().save(*args, **kwargs)
 
-        
 
 class Paylasim(models.Model):
     göndericiAdi = models.CharField(max_length=100)
     gönderiKonu = models.CharField(max_length=100)
     gönderiAciklama = RichTextField()
-    gönderiFoto = models.ImageField(upload_to="Paylasim/",blank=True,null=True,default="Paylasim/akslogo.png")
+    gönderiFoto = models.ImageField(
+        upload_to="Paylasim/", blank=True, null=True, default="Paylasim/akslogo.png")
     gönderiDurumu = models.BooleanField(default=False)
     yazılımUrunumu = models.BooleanField(default=False)
     cameUrunumu = models.BooleanField(default=False)
@@ -97,14 +99,15 @@ class Paylasim(models.Model):
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,blank=True,editable=True,default=9)
-    göndericiUser_id = models.CharField(max_length=100,default="1")
+        Category, on_delete=models.CASCADE, blank=True, editable=True, default=9)
+    göndericiUser = models.ForeignKey(
+        User, on_delete=models.CASCADE, default=1, editable=False)
 
     def __str__(self):
         return f"{self.gönderiKonu}"
 
     def save(self, *args, **kwargs):
-            super(Paylasim, self).save(*args, **kwargs)
-            if not self.slug:
-                self.slug = slugify(self.gönderiKonu) + "-" + str(self.id)
-                self.save()     
+        super(Paylasim, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.gönderiKonu) + "-" + str(self.id)
+            self.save()

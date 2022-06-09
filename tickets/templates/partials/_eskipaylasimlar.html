@@ -1,9 +1,8 @@
 {% load static %}
 
-
 <h5 class="bas text-center mt-3">Eski Paylaşımlar</h5>
-{%for pay in paylasimlarall%}
-  
+{%for pay in paylasimlarall %}
+  {%if pay.göndericiUser_id == user.id %}
 
 <div class="card mb-3" style="max-width: 540px;">
   <div class="row g-0">
@@ -24,8 +23,8 @@
   </div>
 </div>
 
-
-{%endfor%}
+{% endif %}
+{% endfor %}
 
 <style>
   .bas {

@@ -28,9 +28,7 @@ class ProductCreateForm(forms.ModelForm):
         model=Paylasim
         fields= "__all__"
         error_messages ={
-            "göndericiAdi":{
-                "required":"isim giriniz",
-            },
+
             "gönderiKonu":{
                 "required":"Konu Giriniz",
             },
