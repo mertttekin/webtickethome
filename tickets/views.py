@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from datetime import date
+from email import message
 from genericpath import exists
 from itertools import count
 from operator import ge
@@ -8,10 +9,11 @@ from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
-from .forms import ProductCreateForm,ArizaArsiv
+from .forms import ProductCreateForm, ArizaArsiv
 from django.db.models import Count
 from . forms import ArizaCevapForm
 from django.contrib import messages
+
 
 def arizakayit(request):
     if request.method == 'POST':
@@ -20,19 +22,19 @@ def arizakayit(request):
         gelenTelefon1 = request.POST['gelenTelefon']
         gelenAciklama1 = request.POST['gelenAciklama']
         gelenKonu1 = request.POST['gelenKonu']
-        FirmaName1=request.POST['firmaismi']
+        FirmaName1 = request.POST['firmaismi']
         if Firma.objects.filter(FirmaName=FirmaName1).exists():
-            firmaid = Firma.objects.get(FirmaName=FirmaName1)         
+            firmaid = Firma.objects.get(FirmaName=FirmaName1)
             gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
-                            gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1,firma_bilgi_id=firmaid.id)
+                                gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1, firma_bilgi_id=firmaid.id)
         else:
-            firmaValues=Firma(FirmaName = FirmaName1.upper())
+            firmaValues = Firma(FirmaName=FirmaName1.upper())
             firmaValues.save()
             firmaid = firmaValues.id
             gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
-                                gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1,firma_bilgi_id=firmaid)
+                                gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1, firma_bilgi_id=firmaid)
         gelenValues.save()
-        messages.success(request,"Arıza Kaydınız Alınmıştır")
+        messages.success(request, "Arıza Kaydınız Alınmıştır")
         print("varan1")
         return render(request, "tickets.html")
     print("varan2")
@@ -45,7 +47,7 @@ def arizakayit(request):
 
 def home(request):
 
-    messages.success(request,"Arşive Eklenmiştir")
+    messages.success(request, "Arşive Eklenmiştir")
     data = {
         "paylasimlarall": Paylasim.objects.all(),
         "arizalar": Ariza.objects.all(),
@@ -82,31 +84,31 @@ def came(request):
 
 def cameCategory(request, slug):
     data2 = {
-        "paylasimlar": Paylasim.objects.filter(cameUrunumu=True, category__slug=slug,yazılımUrunumu=False),
+        "paylasimlar": Paylasim.objects.filter(cameUrunumu=True, category__slug=slug, yazılımUrunumu=False),
         "category": Category.objects.filter(UrunTip="came"),
         "paylasimlarall": Paylasim.objects.all(),
     }
     return render(request, "came.html", data2)
 
 
-
-
 def yazilim(request):
-    data3={
-        "paylasimlar":Paylasim.objects.filter(yazılımUrunumu=True),
+    data3 = {
+        "paylasimlar": Paylasim.objects.filter(yazılımUrunumu=True),
         "category": Category.objects.filter(UrunTip="yazılım"),
         "paylasimlarall": Paylasim.objects.all(),
     }
 
-    return render(request,"yazilim.html", data3)
+    return render(request, "yazilim.html", data3)
+
 
 def yazılımCategory(request, slug):
     data2 = {
-        "paylasimlar": Paylasim.objects.filter(cameUrunumu=False, category__slug=slug,yazılımUrunumu=True),
+        "paylasimlar": Paylasim.objects.filter(cameUrunumu=False, category__slug=slug, yazılımUrunumu=True),
         "category": Category.objects.filter(UrunTip="yazılım"),
         "paylasimlarall": Paylasim.objects.all(),
     }
-    return render(request, "yazilim.html", data2)    
+    return render(request, "yazilim.html", data2)
+
 
 def arizalar(request):
 
@@ -115,10 +117,10 @@ def arizalar(request):
         arizalar = {
             "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=False),
             "arizaSayi": Ariza.objects.filter(Arsivmi=False).count(),
-            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =False).distinct(),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi=False).distinct(),
             "firmaSayi": Firma.objects.count(),
-    #        Article.objects.filter(reporter__first_name='John')
-    #     QuerySet [<Article: John's second story>, <Article: This is a test>]>
+            #        Article.objects.filter(reporter__first_name='John')
+            #     QuerySet [<Article: John's second story>, <Article: This is a test>]>
 
         }
         return render(request, "arizalar.html", arizalar)
@@ -126,33 +128,32 @@ def arizalar(request):
         return redirect("tickets")
 
 
-
-
-
-def arızaFirma(request,slug):
+def arızaFirma(request, slug):
     if request.user.is_authenticated:
-        arizalar={
-            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=False,firma_bilgi__slug=slug),
-            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =False).distinct(),
+        arizalar = {
+            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=False, firma_bilgi__slug=slug),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi=False).distinct(),
             "firmabaslink2": Firma.objects.get(slug=slug),
         }
-        
-        return render(request,"arizalar.html",arizalar)
+
+        return render(request, "arizalar.html", arizalar)
     else:
         return redirect("tickets")
+
 
 def arizaDetay(request, slug):
     if request.user.is_authenticated:
         form = get_object_or_404(Ariza, slug=slug)
-            
+
         if request.method == "POST":
-            form =ArizaCevapForm(request.POST,instance=form)
+            form = ArizaCevapForm(request.POST, instance=form)
             print("test")
             if form.is_valid():
                 form.save()
                 return redirect("arizalar")
             else:
-                print(form.errors.as_data()) # here you print errors to terminal         
+                # here you print errors to terminal
+                print(form.errors.as_data())
             return redirect("tickets")
         detayid = Ariza.objects.get(slug=slug)
         return render(request, "arizaDetay.html", {"detayid": detayid})
@@ -168,107 +169,116 @@ def paylasimgir(request):
             print("obje kayot")
             if form.is_valid():
                 form.save()
+                messages.success(request, "Paylaşım yapılmıştır")
                 return redirect("paylasimgir")
             else:
-                print(form.errors.as_data()) # here you print errors to terminal
-        form=ProductCreateForm()
+                messages.error(request, "Bir hata oluştu")
+                print(form.errors.as_data())
+        form = ProductCreateForm()
         print("yeni girdi")
         data = {
             "paylasimlarall": Paylasim.objects.all(),
-            "form":form,
-    }
-        return render(request,"paylasimgir.html",data) 
+            "form": form,
+        }
+        return render(request, "paylasimgir.html", data)
     else:
-        return redirect("tickets")       
+        return redirect("tickets")
 
-def editt(request,slug):
+
+def editt(request, slug):
     if request.user.is_authenticated:
         form = get_object_or_404(Paylasim, slug=slug)
         if request.method == 'POST':
-            form = ProductCreateForm(request.POST, request.FILES,instance=form)
-            
+            form = ProductCreateForm(
+                request.POST, request.FILES, instance=form)
+
             if form.is_valid():
                 form.save()
                 return redirect("paylasimgir")
             else:
-                print(form.errors.as_data()) # here you print errors to terminal
-        else:        
-            form=ProductCreateForm(instance=form)
+                # here you print errors to terminal
+                print(form.errors.as_data())
+        else:
+            form = ProductCreateForm(instance=form)
         data = {
             "paylasimlarall": Paylasim.objects.filter(slug=slug),
-            "form":form,
-              }
-        return render(request,"paylasimgir.html",data) 
+            "form": form,
+        }
+        return render(request, "paylasimgir.html", data)
     else:
-        return redirect("tickets")    
+        return redirect("tickets")
 
-def ArsiveEkle(request,slug):
+
+def ArsiveEkle(request, slug):
     if request.user.is_authenticated:
         form = get_object_or_404(Ariza, slug=slug)
-        if form.Arsivmi == False:  
+        if form.Arsivmi == False:
+            messages.success(request, form.gelenKonu)
             form.Arsivmi = True
             form.save()
-            messages.success(request,form.gelenKonu)
+
             print("test")
             return redirect("arizalar")
 
         data2 = {
             "arizalar": Ariza.objects.get(slug=slug),
-             "form":form,
+            "form": form,
         }
-        return render(request,"arsivekaldir.html",data2)                          
+        return render(request, "arsivekaldir.html", data2)
     else:
         return redirect("tickets")
+
 
 def arsiv(request):
     if request.user.is_authenticated:
         arizalar = {
             "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=True),
             "arizaSayi": Ariza.objects.filter(Arsivmi=True).count(),
-            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =True).distinct(),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi=True).distinct(),
             "firmaSayi": Firma.objects.count(),
-    #        Article.objects.filter(reporter__first_name='John')
-    #     QuerySet [<Article: John's second story>, <Article: This is a test>]>
+            #        Article.objects.filter(reporter__first_name='John')
+            #     QuerySet [<Article: John's second story>, <Article: This is a test>]>
 
         }
-        return render(request,"arsiv.html",arizalar)
+        return render(request, "arsiv.html", arizalar)
     else:
         return redirect("tickets")
 
-def arsivFirma(request,slug):
+
+def arsivFirma(request, slug):
     if request.user.is_authenticated:
-        arizalar={
-            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=True,firma_bilgi__slug=slug),
-            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi =True).distinct(),
+        arizalar = {
+            "arizalar": Ariza.objects.order_by('-create_time').filter(Arsivmi=True, firma_bilgi__slug=slug),
+            "firmalar": Firma.objects.order_by('FirmaName').filter(ariza__Arsivmi=True).distinct(),
             "firmabaslink2": Firma.objects.get(slug=slug),
         }
-        
-        return render(request,"arsiv.html",arizalar)
+
+        return render(request, "arsiv.html", arizalar)
     else:
         return redirect("tickets")
 
 
-def arsivdenCikar(request,slug):
+def arsivdenCikar(request, slug):
     if request.user.is_authenticated:
         form = get_object_or_404(Ariza, slug=slug)
-        if form.Arsivmi == True:  
+        if form.Arsivmi == True:
             form.Arsivmi = False
             form.save()
-            messages.success(request,form.gelenKonu)
+            messages.success(request, form.gelenKonu)
             print("test")
             return redirect("arsiv")
 
         data2 = {
             "arizalar": Ariza.objects.get(slug=slug),
-             "form":form,
+            "form": form,
         }
-        return render(request,"arsivekaldir.html",data2)                          
+        return render(request, "arsivekaldir.html", data2)
     else:
         return redirect("tickets")
 
+
 def sss(request):
     pass
-            
 
 
 # def Firmasay():
@@ -291,9 +301,9 @@ def sss(request):
 #             gönderiCameUrunumu1=request.POST.get('gönderiCameUrunumu',False)
 #             gönderiYazılımUrunumu1=request.POST.get('gönderiYazılımUrunumu',False)
 #             gönderiSSSmi1=request.POST.get('gönderiSSSmi',False)
-#             categoryid = Category.objects.get(id=2) 
+#             categoryid = Category.objects.get(id=2)
 
-#             gönderiObject.save()    
+#             gönderiObject.save()
 #             return render(request, "paylasimgir.html" ,{"success": "kullanıcı adı veya parlola hatalı"})
 #         data2 = {
 #             "paylasimlarall": Paylasim.objects.all(),
