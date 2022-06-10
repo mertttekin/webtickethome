@@ -11,36 +11,42 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from .forms import ProductCreateForm, ArizaArsiv
 from django.db.models import Count
-from . forms import ArizaCevapForm
+from . forms import ArizaCevapForm, ArizaGönder, FirmaGönder
 from django.contrib import messages
 
 
 def arizakayit(request):
     if request.method == 'POST':
-        gelenMail1 = request.POST['gelenMail']
-        gelenAdSoyad1 = request.POST['gelenAdSoyad']
-        gelenTelefon1 = request.POST['gelenTelefon']
-        gelenAciklama1 = request.POST['gelenAciklama']
-        gelenKonu1 = request.POST['gelenKonu']
-        FirmaName1 = request.POST['firmaismi']
-        if Firma.objects.filter(FirmaName=FirmaName1).exists():
-            firmaid = Firma.objects.get(FirmaName=FirmaName1)
-            gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
-                                gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1, firma_bilgi_id=firmaid.id)
-        else:
-            firmaValues = Firma(FirmaName=FirmaName1.upper())
-            firmaValues.save()
-            firmaid = firmaValues.id
-            gelenValues = Ariza(gelenMail=gelenMail1, gelenAdSoyad=gelenAdSoyad1,
-                                gelenTelefon=gelenTelefon1, gelenKonu=gelenKonu1, gelenAciklama=gelenAciklama1, firma_bilgi_id=firmaid)
-        gelenValues.save()
-        messages.success(request, "Arıza Kaydınız Alınmıştır")
-        print("varan1")
-        return render(request, "tickets.html")
-    print("varan2")
+        form = ArizaGönder(request.POST)
+        firmaform = FirmaGönder(request.POST)
+        FirmaName1 = firmaform.cleaned_data['FirmaName']
+        if FirmaName1 == "":
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Mesajınız Alınmıştır")
+                return redirect("tickets")
+            else:
+                messages.error(request, "Bir hata oluştu")
+        elif Firma.objects.filter(FirmaName=FirmaName1).exists():
+            print('Bu Firma Mevcut')
+            firmaform = FirmaGönder(request.POST)
+            if firmaform.is_valid():
+                firmaform.save()
+                print('Yeni Firma Eklendi')
+                if form.is_valid():
+                    form.save()
+                    messages.success(
+                        request, "(Yeni Firma)Mesajınız Alınmıştır")
+                    return redirect("tickets")
+                else:
+                    messages.error(request, "Bir hata oluştu")
+    firmaform = FirmaGönder()
+    form = ArizaGönder()
     data = {
         "paylasimlarall": Paylasim.objects.all(),
         "arizalar": Ariza.objects.all(),
+        "form": form,
+        "firmaform": firmaform
     }
     return render(request, "tickets.html", data)
 

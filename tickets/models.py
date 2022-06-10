@@ -24,7 +24,7 @@ class Status(models.Model):
 
 
 class Firma(models.Model):
-    FirmaName = models.CharField(max_length=100, default="Firmasız")
+    FirmaName = models.CharField(max_length=100, null=True, blank=True)
     FirmaYetkilisi = models.CharField(max_length=50, null=True, blank=True)
     FirmaİletisimMail = models.CharField(max_length=50, null=True, blank=True)
     FirmaİletisimTelefon = models.CharField(
@@ -53,7 +53,7 @@ class Ariza(models.Model):
     slug = models.SlugField(null=True,
                             db_index=True, blank=True, editable=False, unique=True)
     firma_bilgi = models.ForeignKey(
-        Firma, null=True, on_delete=models.CASCADE)
+        Firma, null=True, on_delete=models.CASCADE, blank=True, default=1)
     update_time = models.DateTimeField(auto_now_add=False, auto_now=True)
     create_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     ArizaCozumu = RichTextField(default="Girilmedi")

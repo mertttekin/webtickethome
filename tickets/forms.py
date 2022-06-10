@@ -3,12 +3,13 @@ from email.policy import default
 from pyexpat import model
 from tkinter import Widget
 from turtle import width
+from urllib import request
 from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.forms import  widgets
+from django.forms import widgets
 from django import forms
 from tickets import models
-from tickets.models import Ariza, Paylasim
+from tickets.models import Ariza, Firma, Paylasim
 from ckeditor.fields import RichTextField
 from django.db import models
 
@@ -23,41 +24,97 @@ from django.db import models
 #     cameUrunumu= forms.BooleanField(required=False)
 #     sssmi= forms.BooleanField(required=False)
 
+class ArizaGönder(forms.ModelForm):
+    class Meta:
+        model = Ariza
+        fields = "__all__"
+        exclude = [
+            'slug',
+            'ArizaCozumu',
+            'Arsivmi',
+        ]
+
+        widgets = {
+            "firma_bilgi": widgets.Select(attrs={"class": "form-control"}),
+            "gelenKonu": widgets.TextInput(attrs={"class": "form-control"}),
+            "gelenMail": widgets.EmailInput(attrs={"class": "form-control"}),
+            "gelenAdSoyad": widgets.TextInput(attrs={"class": "form-control"}),
+            "gelenTelefon": widgets.TextInput(attrs={"class": "form-control"}),
+            "gelenAciklama": widgets.Textarea(attrs={"class": "form-control"}),
+
+        }
+
+        labels = {
+            "gelenAdSoyad": "Ad Soyad",
+            "gelenKonu": "Konu",
+            "gelenMail": "Email Adresi Giriniz",
+            "gelenTelefon": "İrtibat Telefonu",
+            "gelenAciklama": "Açıklama",
+            "firma_bilgi": "Firma Seç",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ArizaGönder, self).__init__(*args, **kwargs)
+        self.fields['firma_bilgi'].required = False
+
+    def __init__(self, *args, **kwargs):
+        super(ArizaGönder, self).__init__(*args, **kwargs)
+        self.fields['gelenAciklama'].required = True
+
+
 class ProductCreateForm(forms.ModelForm):
     class Meta:
-        model=Paylasim
-        fields= "__all__"
-        error_messages ={
+        model = Paylasim
+        fields = "__all__"
+        error_messages = {
 
-            "gönderiKonu":{
-                "required":"Konu Giriniz",
+            "gönderiKonu": {
+                "required": "Konu Giriniz",
             },
-                "gönderiAciklama":{
-                "required":"Açıklama Giriniz",
+            "gönderiAciklama": {
+                "required": "Açıklama Giriniz",
             },
-                "gönderiFoto":{
-                "required":"Açıklama Giriniz",
+            "gönderiFoto": {
+                "required": "Açıklama Giriniz",
             },
 
         }
-        labels={
-            "göndericiAdi":"Gönderici Adı",
-            "gönderiKonu":"Konu",
+        labels = {
+            "göndericiAdi": "Gönderici Adı",
+            "gönderiKonu": "Konu",
         }
-        widgets= {
-            "göndericiAdi": widgets.TextInput(attrs={"class":"form-control"}),
-            "gönderiKonu": widgets.TextInput(attrs={"class":"form-control"}),
+        widgets = {
+            "göndericiAdi": widgets.TextInput(attrs={"class": "form-control"}),
+            "gönderiKonu": widgets.TextInput(attrs={"class": "form-control"}),
 
         }
 
 
 class ArizaCevapForm(forms.ModelForm):
     class Meta:
-        model=Ariza
-        fields=['ArizaCozumu']
+        model = Ariza
+        fields = ['ArizaCozumu']
+
 
 class ArizaArsiv(forms.ModelForm):
     class Meta:
-        model=Ariza
-        fields=['Arsivmi']
+        model = Ariza
+        fields = ['Arsivmi']
         Arsivmi = True
+
+
+class FirmaGönder(forms.ModelForm):
+    class Meta:
+        model = Firma
+        fields = ['FirmaName']
+
+        labels = {
+            "FirmaName": "Yeni Firma Giriniz",
+        }
+        widgets = {
+            "FirmaName": widgets.TextInput(attrs={"class": "form-control"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(FirmaGönder, self).__init__(*args, **kwargs)
+        self.fields['FirmaName'].required = False
