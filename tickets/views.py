@@ -9,37 +9,56 @@ from unicodedata import category
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
-from .forms import ProductCreateForm, ArizaArsiv
-from django.db.models import Count
-from . forms import ArizaCevapForm, ArizaGönder, FirmaGönder
+from .forms import ProductCreateForm, ArizaCevapForm, ArizaGönder, FirmaGönder
 from django.contrib import messages
 
 
-def arizakayit(request):
+def arizakayit(request, **kwargs):
     if request.method == 'POST':
         form = ArizaGönder(request.POST)
-        firmaform = FirmaGönder(request.POST)
-        FirmaName1 = firmaform.cleaned_data['FirmaName']
-        if FirmaName1 == "":
-            if form.is_valid():
+        firmaform = FirmaGönder(request.POST or None)
+        if firmaform.is_valid():
+            FirmaName1 = firmaform.cleaned_data['FirmaName']
+            if FirmaName1 == None and form.is_valid():
                 form.save()
-                messages.success(request, "Mesajınız Alınmıştır")
+                messages.success(
+                    request, "Firma Girilmeden Gönderildi")
                 return redirect("tickets")
-            else:
-                messages.error(request, "Bir hata oluştu")
-        elif Firma.objects.filter(FirmaName=FirmaName1).exists():
-            print('Bu Firma Mevcut')
-            firmaform = FirmaGönder(request.POST)
-            if firmaform.is_valid():
-                firmaform.save()
-                print('Yeni Firma Eklendi')
+
+            elif Firma.objects.filter(FirmaName=FirmaName1).exists() and form.is_valid():
+
+                print('Bu Firma Mevcut')
+                firmaid = Firma.objects.filter(FirmaName=FirmaName1)
+                ids = firmaid.values_list('pk', flat=True)
+                print(ids[0])
                 if form.is_valid():
-                    form.save()
+                    form1 = form.save(commit=False)
+                    form1.firma_bilgi_id = ids[0]
+                    form1.save()
                     messages.success(
-                        request, "(Yeni Firma)Mesajınız Alınmıştır")
+                        request, "Sistemde Kayıtlı olan Bir Firma Adına Arız Gönderildi")
                     return redirect("tickets")
                 else:
-                    messages.error(request, "Bir hata oluştu")
+                    messages.error(
+                        request, "Yazılarak Mevcut firmalardan biri seçildi ( hata oluştu)")
+            elif form.is_valid():
+                if firmaform.is_valid():
+                    firmaform.save()
+                    firmaid = Firma.objects.filter(FirmaName=FirmaName1)
+                    ids = firmaid.values_list('pk', flat=True)
+                    form1 = form.save(commit=False)
+                    form1.firma_bilgi_id = ids[0]
+                    form1.save()
+                    messages.success(
+                        request, "Yeni Bir Firma Adına Arız talebi gönderildi")
+                    return redirect("tickets")
+                else:
+                    messages.error(
+                        request, "Yen, Firma Eklenirken bir hata oluştu")
+                    return redirect("tickets")
+        else:
+            messages.error(request, "Büyük Bir hata oluştu")
+            return redirect("tickets")
     firmaform = FirmaGönder()
     form = ArizaGönder()
     data = {

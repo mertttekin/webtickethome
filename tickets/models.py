@@ -49,11 +49,11 @@ class Ariza(models.Model):
     gelenAdSoyad = models.CharField(max_length=50)
     gelenTelefon = models.CharField(max_length=50)
     gelenKonu = models.CharField(max_length=50)
-    gelenAciklama = RichTextField()
+    gelenAciklama = models.TextField(max_length=500)
     slug = models.SlugField(null=True,
                             db_index=True, blank=True, editable=False, unique=True)
     firma_bilgi = models.ForeignKey(
-        Firma, null=True, on_delete=models.CASCADE, blank=True, default=1)
+        Firma, null=True, on_delete=models.CASCADE, blank=True, default=19, editable=False)
     update_time = models.DateTimeField(auto_now_add=False, auto_now=True)
     create_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     ArizaCozumu = RichTextField(default="Girilmedi")

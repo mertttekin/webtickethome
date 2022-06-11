@@ -32,6 +32,7 @@ class ArizaGönder(forms.ModelForm):
             'slug',
             'ArizaCozumu',
             'Arsivmi',
+            'firma_bilgi',
         ]
 
         widgets = {
@@ -109,7 +110,7 @@ class FirmaGönder(forms.ModelForm):
         fields = ['FirmaName']
 
         labels = {
-            "FirmaName": "Yeni Firma Giriniz",
+            "FirmaName": "Firma Adı Giriniz",
         }
         widgets = {
             "FirmaName": widgets.TextInput(attrs={"class": "form-control"}),
