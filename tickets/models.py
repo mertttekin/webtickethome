@@ -1,6 +1,7 @@
 from collections import UserList
 from datetime import date
 from email.policy import default
+from pickle import TRUE
 from sqlite3 import Timestamp
 from turtle import mode, st, update
 from unicodedata import category
@@ -92,7 +93,7 @@ class Paylasim(models.Model):
     gönderiAciklama = RichTextField()
     gönderiFoto = models.ImageField(
         upload_to="Paylasim/", blank=True, null=True, default="Paylasim/akslogo.png")
-    gönderiDurumu = models.BooleanField(default=False)
+    gönderiDurumu = models.BooleanField(default=True)
     yazılımUrunumu = models.BooleanField(default=False)
     cameUrunumu = models.BooleanField(default=False)
     sssmi = models.BooleanField(default=False)

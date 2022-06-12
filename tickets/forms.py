@@ -37,11 +37,11 @@ class ArizaGönder(forms.ModelForm):
 
         widgets = {
             "firma_bilgi": widgets.Select(attrs={"class": "form-control"}),
-            "gelenKonu": widgets.TextInput(attrs={"class": "form-control"}),
-            "gelenMail": widgets.EmailInput(attrs={"class": "form-control"}),
-            "gelenAdSoyad": widgets.TextInput(attrs={"class": "form-control"}),
-            "gelenTelefon": widgets.TextInput(attrs={"class": "form-control"}),
-            "gelenAciklama": widgets.Textarea(attrs={"class": "form-control"}),
+            "gelenKonu": widgets.TextInput(attrs={"class": "form-control","placeholder": "Kamera Görüntüsü Gelmiyor"}),
+            "gelenMail": widgets.EmailInput(attrs={"class": "form-control","placeholder": "mert.tekin@aksiyonteknoloji.com"}),
+            "gelenAdSoyad": widgets.TextInput(attrs={"class": "form-control","placeholder": "Mert TEKİN"}),
+            "gelenTelefon": widgets.TextInput(attrs={"class": "form-control","placeholder": "(216) 999 9559"}),
+            "gelenAciklama": widgets.Textarea(attrs={"class": "form-control","placeholder": "Açıklama..."}),
 
         }
 
@@ -83,12 +83,27 @@ class ProductCreateForm(forms.ModelForm):
         labels = {
             "göndericiAdi": "Gönderici Adı",
             "gönderiKonu": "Konu",
+            "gönderiFoto": "Görsel Ekleyiniz",
+            "gönderiDurumu": "Paylaşımınız yayınlansın mı ?",
+            "yazılımUrunumu": "Yazılım sayfası altında mı yayınlansın ?",
+            "cameUrunumu": "Came sayfası altında mı yayınlansın ?",
+            "sssmi": "S.S.S. sayfası altında mı yayınlansın ?",
+            "category": "Hangi kategori altında yayınlansın ?",
         }
         widgets = {
             "göndericiAdi": widgets.TextInput(attrs={"class": "form-control"}),
             "gönderiKonu": widgets.TextInput(attrs={"class": "form-control"}),
+            "gönderiFoto": widgets.FileInput(attrs={"class": "form-control"}),
+            "gönderiDurumu": widgets.NullBooleanSelect(attrs={"class": "form-control"}),
+            "yazılımUrunumu": widgets.NullBooleanSelect(attrs={"class": "form-control"}),
+            "cameUrunumu": widgets.NullBooleanSelect(attrs={"class": "form-control"}),
+            "sssmi": widgets.NullBooleanSelect(attrs={"class": "form-control"}),
+            "category": widgets.Select(attrs={"class": "form-control"}),
 
         }
+
+
+
 
 
 class ArizaCevapForm(forms.ModelForm):
@@ -113,7 +128,7 @@ class FirmaGönder(forms.ModelForm):
             "FirmaName": "Firma Adı Giriniz",
         }
         widgets = {
-            "FirmaName": widgets.TextInput(attrs={"class": "form-control"}),
+            "FirmaName": widgets.TextInput(attrs={"class": "form-control","placeholder": "Aksiyon Teknoloji Hizmetleri"}),
         }
 
     def __init__(self, *args, **kwargs):
