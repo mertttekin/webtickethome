@@ -12,7 +12,7 @@
             <a class="nav-link" href="{% url 'tickets' %}">Sorun-Şikayet Bildir</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sık Sorulan Sorular</a>
+            <a class="nav-link" href="{% url 'sss' %}">Sık Sorulan Sorular</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'came' %}">Came</a>
@@ -40,7 +40,7 @@
             <a class="nav-link" href="{% url 'logout' %}">Çıkış yap</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'paylasimgir' %}">Hoşgeldiniz,{{user.username}}</a>
+            <a class="nav-link" href="{% url 'paylasimgir' %}">Hoşgeldin {{user.first_name}}</a>
           </li>
           {% else %}
          <!-- <li class="nav-item">             

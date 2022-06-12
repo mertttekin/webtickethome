@@ -9,7 +9,7 @@
 <div class="container center mt-3">
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-7">
             {% for msg in messages %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>     </strong> {{msg}}.
@@ -18,7 +18,8 @@
               {%endfor%}
              {% include 'partials/_form.html' %}
         </div>
-        <div class="col-6">
+        <div class="col-5">
+            <h5 class="bas text-center mt-3">Bazı Hızlı Çözümler</h5>
             {% include 'partials/_sidebar.html' %}
         </div>
     </div>
@@ -26,3 +27,16 @@
 
 
 {% endblock %}
+
+<style>
+    .bas {
+      
+        border-radius: 6px;     
+        position: relative;
+        background-color: rgb(13,110,253);
+        margin-bottom: 2px;
+        padding-bottom: 4px;
+        color: rgb(255, 255, 255);
+  
+    }
+  </style>

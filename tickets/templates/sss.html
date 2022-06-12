@@ -1,22 +1,20 @@
 {% extends "basee.html" %}
+{% load static %}
 
 {% block content %}
-
-{% load static %}
 
     {% include 'partials/_navbar.html' %}
 
     <div class="container mt-3">
         <div class="row">
-            <div class="col-9">
-                
+            <div class="col-9 mb-2">
+            {% include 'partials/_sss.html' %}
+               
             </div>
             <div class="col-3 mb-2">
-                {% include 'partials/_sidebar.html' %}
+              {% include 'partials/_sidebar.html' %}  
             </div>
         </div>
     </div>
-    {% static 'img/slider-foto-1.png' %}
-    {% endblock %}
     
-
+{% endblock %}

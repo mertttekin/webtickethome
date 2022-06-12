@@ -101,7 +101,9 @@ class ProductCreateForm(forms.ModelForm):
             "category": widgets.Select(attrs={"class": "form-control"}),
 
         }
-
+    def __init__(self, *args, **kwargs):
+        super(ProductCreateForm, self).__init__(*args, **kwargs)
+        self.fields['category'].required = True
 
 
 

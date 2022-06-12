@@ -50,7 +50,7 @@ def arizakayit(request, **kwargs):
                     form1.firma_bilgi_id = ids[0]
                     form1.save()
                     messages.success(
-                        request, "Yeni Bir Firma Adına Arız talebi gönderildi")
+                        request, "Yeni Bir Firma Adına Arıza talebi gönderildi")
                     return redirect("tickets")
                 else:
                     messages.error(
@@ -62,7 +62,7 @@ def arizakayit(request, **kwargs):
     firmaform = FirmaGönder()
     form = ArizaGönder()
     data = {
-        "paylasimlarall": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all()[:5],
         "arizalar": Ariza.objects.all(),
         "form": form,
         "firmaform": firmaform
@@ -72,19 +72,24 @@ def arizakayit(request, **kwargs):
 
 def home(request):
 
-    messages.success(request, "Arşive Eklenmiştir")
     data = {
-        "paylasimlarall": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all()[:2],
         "arizalar": Ariza.objects.all(),
+        "sliders":[
+            {
+                "slider_image":"slider-foto-1.png"
+            },
+             {
+                "slider_image":"slider-foto-2.png"
+            }
+        ]
     }
     return render(request, "index.html", data)
 
-# kullanılmayan bir fonksiyon (tickets)
-
-
+# kullanılmayan bir fonksiyon (tickets)+++++
 def tickets(request):
     data = {
-        "paylasimlarall": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all()[:3],
         "arizalar": Ariza.objects.all(),
     }
     return render(request, "tickets.html", data)
@@ -303,7 +308,11 @@ def arsivdenCikar(request, slug):
 
 
 def sss(request):
-    pass
+    data={
+        "sss":Paylasim.objects.filter(sssmi=True,gönderiDurumu = True),
+        "paylasimlarall": Paylasim.objects.all(),
+    }
+    return render(request,"sss.html",data)
 
 
 # def Firmasay():

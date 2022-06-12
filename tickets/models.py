@@ -3,9 +3,10 @@ from datetime import date
 from email.policy import default
 from pickle import TRUE
 from sqlite3 import Timestamp
-from turtle import mode, st, update
+from turtle import mode, ondrag, st, update
 from unicodedata import category
 from venv import create
+from webbrowser import get
 from xml.parsers.expat import model
 from django.conf import UserSettingsHolder
 from django.db import models
@@ -15,7 +16,11 @@ from PIL import Image
 from django.contrib.auth.models import User
 from django.db.models import Count
 from pkg_resources import safe_name
+from django.contrib.auth import get_user_model
+from django_userforeignkey.models.fields import UserForeignKey
 
+
+User = get_user_model()
 
 class Status(models.Model):
     name = models.CharField(max_length=100)
@@ -100,9 +105,9 @@ class Paylasim(models.Model):
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, blank=True, editable=True, default=9)
-    göndericiUser = models.ForeignKey(
-        User, on_delete=models.CASCADE, default=1, editable=False)
+        Category, on_delete=models.CASCADE,null=False, blank=False, editable=True)
+    göndericiUser = UserForeignKey(auto_user_add=True)
+    # ek modul eklendi
 
     def __str__(self):
         return f"{self.gönderiKonu}"
