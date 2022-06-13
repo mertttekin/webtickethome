@@ -22,6 +22,7 @@ from django_userforeignkey.models.fields import UserForeignKey
 
 User = get_user_model()
 
+
 class Status(models.Model):
     name = models.CharField(max_length=100)
 
@@ -93,8 +94,8 @@ class Category(models.Model):
 
 
 class Paylasim(models.Model):
-    göndericiAdi = models.CharField(max_length=100)
-    gönderiKonu = models.CharField(max_length=100)
+    göndericiAdi = models.CharField(max_length=100, null=False, blank=False)
+    gönderiKonu = models.CharField(max_length=100, null=False, blank=False)
     gönderiAciklama = RichTextField()
     gönderiFoto = models.ImageField(
         upload_to="Paylasim/", blank=True, null=True, default="Paylasim/akslogo.png")
@@ -105,7 +106,7 @@ class Paylasim(models.Model):
     slug = models.SlugField(null=False, unique=True,
                             db_index=True, blank=True, editable=False)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,null=False, blank=False, editable=True)
+        Category, on_delete=models.CASCADE, null=False, blank=False, editable=True)
     göndericiUser = UserForeignKey(auto_user_add=True)
     # ek modul eklendi
 

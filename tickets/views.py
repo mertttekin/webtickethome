@@ -75,18 +75,20 @@ def home(request):
     data = {
         "paylasimlarall": Paylasim.objects.all()[:2],
         "arizalar": Ariza.objects.all(),
-        "sliders":[
+        "sliders": [
             {
-                "slider_image":"slider-foto-1.png"
+                "slider_image": "slider-foto-1.png"
             },
-             {
-                "slider_image":"slider-foto-2.png"
+            {
+                "slider_image": "slider-foto-2.png"
             }
         ]
     }
     return render(request, "index.html", data)
 
 # kullanılmayan bir fonksiyon (tickets)+++++
+
+
 def tickets(request):
     data = {
         "paylasimlarall": Paylasim.objects.all()[:3],
@@ -105,9 +107,9 @@ def details(request, slug):
 
 def came(request):
     data = {
-        "paylasimlar": Paylasim.objects.filter(cameUrunumu=True),
+        "paylasimlar": Paylasim.objects.filter(cameUrunumu=True, gönderiDurumu=True),
         "category": Category.objects.filter(UrunTip="came"),
-        "paylasimlarall": Paylasim.objects.all(),
+        "paylasimlarall": Paylasim.objects.all()[:10],
     }
     return render(request, "came.html", data)
 
@@ -123,7 +125,7 @@ def cameCategory(request, slug):
 
 def yazilim(request):
     data3 = {
-        "paylasimlar": Paylasim.objects.filter(yazılımUrunumu=True),
+        "paylasimlar": Paylasim.objects.filter(yazılımUrunumu=True, gönderiDurumu=True),
         "category": Category.objects.filter(UrunTip="yazılım"),
         "paylasimlarall": Paylasim.objects.all(),
     }
@@ -308,11 +310,11 @@ def arsivdenCikar(request, slug):
 
 
 def sss(request):
-    data={
-        "sss":Paylasim.objects.filter(sssmi=True,gönderiDurumu = True),
+    data = {
+        "sss": Paylasim.objects.filter(sssmi=True, gönderiDurumu=True),
         "paylasimlarall": Paylasim.objects.all(),
     }
-    return render(request,"sss.html",data)
+    return render(request, "sss.html", data)
 
 
 # def Firmasay():
