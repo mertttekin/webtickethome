@@ -29,13 +29,31 @@ SECRET_KEY = 'django-insecure-r#w!b0abs31+jkzv2%6j9fl5pr@aroo&6hnb84=j6$ixf)6t!2
 DEBUG = True
 # DEBUG = getenv("IS_DEVELOPMENT")
 
-ALLOWED_HOSTS = ["172.16.54.84"]
+ALLOWED_HOSTS = ["*"]
 """ALLOWED_HOSTS = [
     getenv("APP_HOST")
 ]"""
 
 
 # Application definition
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            ['Undo', 'Redo',
+             '-', 'Bold', 'Italic', 'Underline',
+             '-', 'Link', 'Unlink', 'Anchor',
+             '-', 'Format',
+
+             '-', 'Maximize',
+
+             ],
+        ],
+        'width': 'auto',
+        'toolbarCanCollapse': True,
+    },
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -89,6 +89,7 @@ class ProductCreateForm(forms.ModelForm):
             "cameUrunumu": "Came sayfası altında mı yayınlansın ?",
             "sssmi": "S.S.S. sayfası altında mı yayınlansın ?",
             "category": "Hangi kategori altında yayınlansın ?",
+            "gönderiAciklama": "Bir açıklama Giriniz",
         }
         widgets = {
             "göndericiAdi": widgets.TextInput(attrs={"class": "form-control"}),
@@ -99,6 +100,10 @@ class ProductCreateForm(forms.ModelForm):
             "cameUrunumu": widgets.NullBooleanSelect(attrs={"class": "form-control"}),
             "sssmi": widgets.NullBooleanSelect(attrs={"class": "form-control"}),
             "category": widgets.Select(attrs={"class": "form-control"}),
+            "gönderiAciklama": widgets.Textarea(attrs={
+                'class': 'form-control django-ckeditor-widget ckeditor',
+                'id': 'form-control',
+                'spellcheck': 'False'}),
 
         }
 
