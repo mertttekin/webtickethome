@@ -60,7 +60,7 @@ class Ariza(models.Model):
     slug = models.SlugField(null=True,
                             db_index=True, blank=True, editable=False, unique=True)
     firma_bilgi = models.ForeignKey(
-        Firma, null=True, on_delete=models.CASCADE, blank=True, default=19, editable=False)
+        Firma, null=True, on_delete=models.CASCADE, blank=True, default=35, editable=False)
     update_time = models.DateTimeField(auto_now_add=False, auto_now=True)
     create_time = models.DateTimeField(auto_now_add=True, auto_now=False)
     ArizaCozumu = RichTextField(default="Girilmedi")
