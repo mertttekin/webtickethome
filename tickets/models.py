@@ -45,6 +45,7 @@ class Firma(models.Model):
         return f"{self.FirmaName}"
 
     def save(self, *args, **kwargs):
+        self.FirmaName = self.FirmaName.upper()
         self.slug = slugify(self.FirmaName)
         super().save(*args, **kwargs)
 

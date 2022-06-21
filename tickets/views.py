@@ -1,16 +1,36 @@
 from asyncio.windows_events import NULL
 from datetime import date
+from distutils.log import error
 from email import message
 from genericpath import exists
 from itertools import count
 from operator import ge
 from tkinter import E
 from unicodedata import category
+
+from django.http import HttpResponse, HttpResponseRedirect
 from . models import Category, Paylasim, Ariza, Firma
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from .forms import ProductCreateForm, ArizaCevapForm, ArizaGönder, FirmaGönder
 from django.contrib import messages
+from django.core.mail import BadHeaderError, send_mail
+
+
+def send_email(request):
+    subject = request.POST.get('subject', '')
+    message = request.POST.get('message', '')
+    from_email = request.POST.get('from_email', '')
+    if subject and message and from_email:
+        try:
+            send_mail(subject, message, from_email, ['admin@example.com'])
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        return HttpResponseRedirect('/contact/thanks/')
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse('Make sure all fields are entered and valid.')
 
 
 def arizakayit(request, **kwargs):
@@ -19,31 +39,34 @@ def arizakayit(request, **kwargs):
         firmaform = FirmaGönder(request.POST or None)
         if firmaform.is_valid():
             FirmaName1 = firmaform.cleaned_data['FirmaName']
+            print(FirmaName1)
             if FirmaName1 == None and form.is_valid():
                 form.save()
                 messages.success(
                     request, "Firma Girilmeden Gönderildi")
                 return redirect("tickets")
 
-            elif Firma.objects.filter(FirmaName=FirmaName1).exists() and form.is_valid():
+            elif Firma.objects.filter(FirmaName=FirmaName1.upper()).exists() and form.is_valid():
                 print('Bu Firma Mevcut')
-                firmaid = Firma.objects.filter(FirmaName=FirmaName1)
+                firmaid = Firma.objects.filter(FirmaName=FirmaName1.upper())
                 ids = firmaid.values_list('pk', flat=True)
                 print(ids[0])
                 form1 = form.save(commit=False)
                 form1.firma_bilgi_id = ids[0]
                 form1.save()
                 messages.success(
-                    request, "Sistemde Kayıtlı olan Bir Firma Adına Arız Gönderildi")
+                    request, "Sistemde Kayıtlı olan Bir Firma Adına Arıza Gönderildi")
                 return redirect("tickets")
 
             elif form.is_valid():
                 firmaform.save()
-                firmaid = Firma.objects.filter(FirmaName=FirmaName1)
+                firmaid = Firma.objects.filter(FirmaName=FirmaName1.upper())
                 ids = firmaid.values_list('pk', flat=True)
                 form1 = form.save(commit=False)
+                print(ids[0])
                 form1.firma_bilgi_id = ids[0]
                 form1.save()
+                #send_mail("Ariza Mesajı alındı", message, from_email, ['admin@example.com'])
                 messages.success(
                     request, "Yeni Bir Firma Adına Arıza talebi gönderildi")
                 return redirect("tickets")
@@ -91,9 +114,6 @@ def tickets(request):
 
 def details(request, slug):
     detayid = Paylasim.objects.get(slug=slug)
-    detay = {
-        "paylasimlar": Paylasim.objects.all(),
-    }
     return render(request, "details.html", {"detayid": detayid})
 
 
@@ -193,7 +213,8 @@ def paylasimgir(request):
             print("obje kayot")
             if form.is_valid():
                 form.save()
-                messages.success(request, "Paylaşım yapılmıştır")
+                messages.success(
+                    request, "Paylaşım yapılmıştır", extra_tags="success")
                 return redirect("paylasimgir")
             else:
                 messages.error(request, "Bir hata oluştu")
@@ -312,6 +333,18 @@ def sss(request):
 def post_search(request):
 
     return render(request, 'arama.html')
+
+
+def paylasimSil(request, slug):
+    if request.user.is_authenticated:
+        data = {
+            "paylasim": Paylasim.objects.filter(slug=slug).delete(),
+        }
+        messages.warning(request, "Paylasım Silinmiştir", extra_tags="warning")
+        return redirect("paylasimgir")
+
+    else:
+        return redirect("tickets")
 
 
 # def Firmasay():

@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-r#w!b0abs31+jkzv2%6j9fl5pr@aroo&6hnb84=j6$ixf)6t!2
 DEBUG = True
 # DEBUG = getenv("IS_DEVELOPMENT")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["172.16.54.84"]
 """ALLOWED_HOSTS = [
     getenv("APP_HOST")
 ]"""
@@ -63,10 +63,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_userforeignkey',
+    'rest_framework',
     'account',
     'tickets',
-    'ckeditor'
+    'ckeditor',
+    'api',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

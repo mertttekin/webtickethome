@@ -18,18 +18,20 @@
     </div>
   </div>
   <div class="row">
-    <hr>
+    
   </div>
 </div>
 {% for msg in messages%}
+
 <script>
   swal({
   title: "{{msg}}",
   text: "Teşekkürler!",
-  icon: "success",
+  icon: "{{msg.extra_tags}}",
   button: "Devam Et!",
 });
 </script>
+
 {% endfor %}
 
 <style>

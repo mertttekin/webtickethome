@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\mertt\OneDrive\Masaüstü\YP\django-proje\webtickethome\webtickethome\newenv"
+VIRTUAL_ENV="C:\Users\mertt\OneDrive\Masaüstü\YP\django-proje\webversion2.3\webtickethome\newenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
