@@ -40,7 +40,7 @@ class ArizaGönder(forms.ModelForm):
             "gelenKonu": widgets.TextInput(attrs={"class": "form-control", "placeholder": "Kamera Görüntüsü Gelmiyor"}),
             "gelenMail": widgets.EmailInput(attrs={"class": "form-control", "placeholder": "mert.tekin@aksiyonteknoloji.com"}),
             "gelenAdSoyad": widgets.TextInput(attrs={"class": "form-control", "placeholder": "Mert TEKİN"}),
-            "gelenTelefon": widgets.TextInput(attrs={"class": "form-control", "placeholder": "(216) 999 9559"}),
+            "gelenTelefon": widgets.NumberInput(attrs={"class": "form-control", "placeholder": "(216) 999 9559"}),
             "gelenAciklama": widgets.Textarea(attrs={"class": "form-control", "placeholder": "Açıklama..."}),
 
         }

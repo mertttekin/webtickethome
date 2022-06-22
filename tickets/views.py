@@ -114,6 +114,7 @@ def tickets(request):
 
 def details(request, slug):
     detayid = Paylasim.objects.get(slug=slug)
+
     return render(request, "details.html", {"detayid": detayid})
 
 

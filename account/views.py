@@ -2,6 +2,7 @@ import re
 from telnetlib import LOGOUT
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 
 def login_request(request):

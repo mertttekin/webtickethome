@@ -73,7 +73,7 @@
 <footer class="bottom text-white text-center bg-primary">
     <div class="row text-white">
         <div class="col-3 text-white text-center " >
-           <a href="https://aksiyonteknoloji.com/" style="color:#ffffff;text-decoration: none;" taget="blank" class="text-uppercase mb-4">aksiyonteknoloji.com</a>
+           <a href="https://aksiyonteknoloji.com/" style="color:#ffffff;text-decoration: none;" target="blank" class="text-uppercase mb-4">aksiyonteknoloji.com</a>
 
 
         </div>
@@ -214,3 +214,16 @@
    
   }
 </style>
+
+{% for msg in messages%}
+
+<script>
+  swal({
+  title: "{{msg}}",
+  text: "Teşekkürler!",
+  icon: "success",
+  button: "Devam Et!",
+});
+</script>
+
+{% endfor %}
