@@ -9,7 +9,7 @@ class ArizaSerializer (serializers.ModelSerializer):
         exclude = [
             'id',
             'slug',
-            'ArizaCozumu',
+            'CozumVarMı',
             'Arsivmi',
             'firma_bilgi',
         ]

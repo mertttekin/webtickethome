@@ -8,6 +8,7 @@ from unicodedata import category
 from venv import create
 from webbrowser import get
 from xml.parsers.expat import model
+from xmlrpc.client import Boolean
 from django.conf import UserSettingsHolder
 from django.db import models
 from django.utils.text import slugify
@@ -64,7 +65,7 @@ class Ariza(models.Model):
         Firma, null=True, on_delete=models.CASCADE, blank=True, default=35, editable=False)
     update_time = models.DateTimeField(auto_now_add=False, auto_now=True)
     create_time = models.DateTimeField(auto_now_add=True, auto_now=False)
-    ArizaCozumu = RichTextField(default="Girilmedi")
+    CozumVarMı = models.BooleanField(default=False)
     Arsivmi = models.BooleanField(default=False)
     #gelenFirma = models.CharField(max_length=50, default="Belirtilmemiş")
     # slug = models.SlugField(null=True, unique=True, db_index=True)
@@ -119,3 +120,18 @@ class Paylasim(models.Model):
         if not self.slug:
             self.slug = slugify(self.gönderiKonu) + "-" + str(self.id)
             self.save()
+
+
+class Comment(models.Model):
+    hangi_ariza = models.ForeignKey(
+        Ariza, on_delete=models.CASCADE, related_name='comments')
+    göndericiUser = UserForeignKey(auto_user_add=True)
+    yorum = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.göndericiUser, self.hangi_ariza)

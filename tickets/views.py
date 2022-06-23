@@ -9,10 +9,10 @@ from tkinter import E
 from unicodedata import category
 
 from django.http import HttpResponse, HttpResponseRedirect
-from . models import Category, Paylasim, Ariza, Firma
+from . models import Category, Paylasim, Ariza, Firma, Comment, User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
-from .forms import ProductCreateForm, ArizaCevapForm, ArizaGönder, FirmaGönder
+from .forms import ProductCreateForm, ArizaCevapForm, ArizaGönder, FirmaGönder, CommentForm
 from django.contrib import messages
 from django.core.mail import BadHeaderError, send_mail
 
@@ -188,21 +188,43 @@ def arızaFirma(request, slug):
 
 def arizaDetay(request, slug):
     if request.user.is_authenticated:
-        form = get_object_or_404(Ariza, slug=slug)
-
+        template_name = 'arizaDetay.html'
+        hangi_ariza = get_object_or_404(Ariza, slug=slug)
+        comments = hangi_ariza.comments.filter(active=True)
+        new_comment = None
         if request.method == "POST":
-            form = ArizaCevapForm(request.POST, instance=form)
-            print("test")
-            if form.is_valid():
-                form.save()
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                hangi_ariza.CozumVarMı = True
+                new_comment = comment_form.save(commit=False)
+                new_comment.hangi_ariza = hangi_ariza
+                hangi_ariza.save()
+                new_comment.save()
                 return redirect("arizalar")
-            else:
-                # here you print errors to terminal
-                print(form.errors.as_data())
-            return redirect("tickets")
-        detayid = Ariza.objects.get(slug=slug)
-        return render(request, "arizaDetay.html", {"detayid": detayid})
+        else:
+            comment_form = CommentForm()
 
+        detayid = Ariza.objects.get(slug=slug)
+        return render(request, template_name, {
+            "detayid": detayid,
+            'post': hangi_ariza,
+            'comments': comments,
+            'new_comment': new_comment,
+            'comment_form': comment_form,
+
+        })
+
+    else:
+        return redirect("tickets")
+
+
+def yorumSil(request, id):
+    if request.user.is_authenticated:
+        comments = {
+            "yorumlar": Comment.objects.filter(id=id).delete(),
+
+        }
+        return redirect("paylasimgir")
     else:
         return redirect("tickets")
 

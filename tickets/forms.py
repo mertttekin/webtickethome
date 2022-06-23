@@ -9,7 +9,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms import widgets
 from django import forms
 from tickets import models
-from tickets.models import Ariza, Firma, Paylasim
+from tickets.models import Ariza, Firma, Paylasim, Comment
 from ckeditor.fields import RichTextField
 from django.db import models
 
@@ -30,7 +30,7 @@ class ArizaGönder(forms.ModelForm):
         fields = "__all__"
         exclude = [
             'slug',
-            'ArizaCozumu',
+            'CozumVarMı',
             'Arsivmi',
             'firma_bilgi',
         ]
@@ -123,7 +123,7 @@ class ProductCreateForm(forms.ModelForm):
 class ArizaCevapForm(forms.ModelForm):
     class Meta:
         model = Ariza
-        fields = ['ArizaCozumu']
+        fields = ['CozumVarMı']
 
 
 class ArizaArsiv(forms.ModelForm):
@@ -148,3 +148,15 @@ class FirmaGönder(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FirmaGönder, self).__init__(*args, **kwargs)
         self.fields['FirmaName'].required = False
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('yorum',)
+        labels = {
+            "yorum": "Uygulanan çözümü ayrıntılı yazmayı unutmayınız",
+        }
+        widgets = {
+            "yorum": widgets.Textarea(attrs={"class": "form-control", "placeholder": ""}),
+        }

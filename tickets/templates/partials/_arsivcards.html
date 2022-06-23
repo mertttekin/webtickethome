@@ -12,7 +12,7 @@
 
     
   {%for ar in arizalar%}
-<div class="{%if ar.ArizaCozumu == 'Girilmedi' %} cardd {% else %} card {%endif%} card-text mt-3">
+<div class="{%if ar.CozumVarMı == False %} cardd {% else %} card {%endif%} card-text mt-3">
     <div class="card-header">
       <div class="row">
         <div class="col-8">
@@ -68,10 +68,11 @@
 </div>
     </div>
     <div class="card-footer text-muted">
-      {%if ar.ArizaCozumu == 'Girilmedi' %}
+    {%if ar.CozumVarMı == False  %}
       <p>Çözüm Girilmedi</p>
       {% else %}
-      <p>Çözüm Girildi : {{ar.ArizaCozumu|safe|slice:"0:20"}}.... </p>
+      <p>Çözüm Girildi </p>
+      <!-- <p>Çözüm Girildi : {{ar.ArizaCozumu|safe|slice:"0:20"}}.... </p> -->
       {% endif %}
       
     </div>

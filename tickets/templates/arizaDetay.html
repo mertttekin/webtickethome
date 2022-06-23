@@ -1,17 +1,57 @@
 {% extends "basee.html" %}
 
 {% block content %}
-
+{% load crispy_forms_tags %}
     {% include 'partials/_navbar.html' %}
 
-    <div class="container mt-3">
+    <style>
+      .anamesaj{
+        background-color: rgba(255, 199, 207, 0.26);
+        border-radius: 6px;  
+      }
+    </style>
+    <style>
+      .cözümmesaj{
+        background-color: rgba(210, 208, 247, 0.25);
+        border-radius: 6px;  
+      }
+    </style>
+      <style>
+        .newmesaj{
+          background-color: rgba(16, 126, 252, 0.26);
+          border-radius: 6px;  
+        }
+      </style>  
+    <style>
+      .bas {
+        
+          border-radius: 6px;     
+          position: relative;
+          background-color: rgb(13,110,253);
+          margin-bottom: 2px;
+          padding-bottom: 4px;
+          color: rgb(255, 255, 255);
+
+      }
+    </style>
+
+
+
+    <div class=" container mt-3">
         <div class="row">
             <div class="col-12">
+              <h5 class="bas text-center mb-3">Ariza Detay - Çözümler</h5>
               <div class="card mb-3">
                   <div class="row g-0">
                     <div class="col-md-12">
-                      <div class="card-body">
-                              <h5 class="card-title">{{detayid.gelenKonu}}</h5>
+                      <div class="anamesaj card-body">
+                        <div class="row">
+                          <div class="col-10">
+                            <h5 class="card-title">{{detayid.gelenKonu}}</h5> 
+                          </div>
+                              <div class="col-2 ">
+                              <p  class="card-text " ><small  class="text-muted" >{{detayid.create_time}}</small></p>                              </div>
+                         </div>
                               <hr>
                               <p class="card-text">{{detayid.gelenAciklama|safe}}</p>
                               <hr>
@@ -19,47 +59,118 @@
                               <p class="card-text">Kimden: {{detayid.gelenAdSoyad}}</p>
                               <p class="card-text">Mail: {{detayid.gelenMail}}</p>
                               <p class="card-text">Telefon: {{detayid.gelenTelefon}} </p>
-                              <p class="card-text"><small class="text-muted">{{detayid.create_time}}</small></p>
                       </div>
                     </div>
                   </div>
                 </div>
             </div>
         </div>
-      
-        <div class="row">
-          <div class="col-12">
-            <div class="card mb-3">
-                <div class="row g-0">
-                  <div class="col-md-12">
-                    <div class="card-body">
-                            
-                            {% if detayid.ArizaCozumu == "" %}
-                            <h5 class="card-title">Henuz Çözüm Girilmedi</h5>
-                             {% else %}
-                            
-                             <h5 class="card-title">Çözüm</h5>                
-                             <p class="card-text"> {{detayid.ArizaCozumu}}</p>                           
-                             <p class="card-text"> <small class="text-muted">{{detayid.update_time}}</p>
-                            {% endif %}
+    </div>
+     <hr>
+        <div class="container mt-3">
+          <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+              {% for comment in comments %}
+              <!-- <div class="card mb-3">
+                      <div class="card-body">                     
+                               <h5 class="card-title">Çözüm</h5>                
+                               <p class="card-text">       {{ comment.yorum | linebreaks }}</p>                           
+                               <p class="card-text">  asdasd </p>  
+                                <small class="text-muted">{{ comment.created_on }}</p>                         
+                    </div>
+             </div> -->
+             <div class="cözümmesaj card mt-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-9">
+                   <h5 class="card-title">Çözüm</h5>
+                  </div>
+                  <div class="col-3">
+                    <small class="text-muted">       {{ comment.created_on }} </small>                
+              
                   </div>
                 </div>
+                <p class="card-text">       {{ comment.yorum | linebreaks }}</p>   
+
+                <div class="row">
+                  <div class="col-10">
+                  <small> <br class="text-muted">  Çözüm giren : {{comment.göndericiUser }} </br></small>
+
+                  </div>
+                  <div class="col-2" style="float:right;" >
+                    <form action="" method="post">
+                    <a href="{% url 'yorumSil' comment.id %}">
+                     
+                    <button  type="button" class="btn btn-secondary " style="float:right;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                      </svg>
+                    </button>
+                  </a>
+                  </form>
+                  </div>
+                
+
+                </div>
+
+
+
+                    
               </div>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+    </div>
+
+    <div class="container mt-3">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <div class="newmesaj card mb-3">
+            <div class="row g-0">
+              <div class="col-md-12">
+                <div class=" card-body">
+                  {% if new_comment %}
+                  <div class="alert alert-success" role="alert">
+                    Çözümünüz Alınmıştır
+                  </div>
+                  {% else %}
+                  <h3>Çözüm Giriniz</h3>
+                  <form method="post" style="margin-top: 0.5em;">
+                    {{ comment_form | crispy }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary  btn-lg mt-3">Kaydet</button>
+                  </form>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      <div class="col-2"></div>
       </div>
-        <form action="" method="POST">
-          {% csrf_token %} 
-          <div class="mb-3">
-            <label for="ArizaCozumu" class="form-label">Çözümümüz</label>
-            <textarea class="form-control" name="ArizaCozumu" id="ArizaCozumu"> </textarea>
-          </div>
-          <div class="col-12">
-            <button class="btn btn-primary" type="submit">Kaydet</button>
-          </div>
-        </form> 
     </div>
+
     
+    <!-- {% for comment in comments %}
+    <div class="comments" style="padding: 10px;">
+      <p class="font-weight-bold">
+        {{ comment.name }}
+        <span class=" text-muted font-weight-normal">
+          {{ comment.created_on }}
+        </span>
+      </p>
+      {{ comment.yorum | linebreaks }}
+    </div>
+    {% endfor %} -->
+
+
+
+
     
     {% endblock %}
     

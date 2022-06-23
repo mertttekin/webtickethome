@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_userforeignkey',
+    'crispy_forms',
     'rest_framework',
     'account',
     'tickets',

@@ -27,6 +27,8 @@ urlpatterns = [
          views.arsivdenCikar, name="arsivdenCikar"),
     path('sss', views.sss, name="sss"),
     path('paylasimgir/sil/<slug:slug>', views.paylasimSil, name="paylasimSil"),
+    path('ariza/detaysil/<int:id>',
+         views.yorumSil, name="yorumSil"),
 
 ]
 # path(url,foksiyon,path ismi)
