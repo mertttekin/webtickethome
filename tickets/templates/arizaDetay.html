@@ -100,7 +100,7 @@
 
                   </div>
                   <div class="col-2" style="float:right;" >
-                    <form action="" method="post">
+                    <form id="yorum-sil" action="" method="post">
                     <a href="{% url 'yorumSil' comment.id %}">
                      
                     <button  type="button" class="btn btn-secondary " style="float:right;">
@@ -140,7 +140,7 @@
                   </div>
                   {% else %}
                   <h3>Çözüm Giriniz</h3>
-                  <form method="post" style="margin-top: 0.5em;">
+                  <form id="yorum-ekle" method="post" style="margin-top: 0.5em;">
                     {{ comment_form | crispy }}
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary  btn-lg mt-3">Kaydet</button>

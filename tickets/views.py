@@ -15,33 +15,37 @@ from django.db.models import F
 from .forms import ProductCreateForm, ArizaCevapForm, ArizaGönder, FirmaGönder, CommentForm
 from django.contrib import messages
 from django.core.mail import BadHeaderError, send_mail
+from django.views.generic import FormView, TemplateView
+from django.urls import reverse_lazy
 
-
-def send_email(request):
-    subject = request.POST.get('subject', '')
-    message = request.POST.get('message', '')
-    from_email = request.POST.get('from_email', '')
-    if subject and message and from_email:
-        try:
-            send_mail(subject, message, from_email, ['admin@example.com'])
-        except BadHeaderError:
-            return HttpResponse('Invalid header found.')
-        return HttpResponseRedirect('/contact/thanks/')
-    else:
-        # In reality we'd use a form class
-        # to get proper validation errors.
-        return HttpResponse('Make sure all fields are entered and valid.')
+# def send_email(request):
+#     subject = request.POST.get('subject', '')
+#     message = request.POST.get('message', '')
+#     from_email = request.POST.get('from_email', '')
+#     if subject and message and from_email:
+#         try:
+#             send_mail(subject, message, from_email, ['admin@example.com'])
+#         except BadHeaderError:
+#             return HttpResponse('Invalid header found.')
+#         return HttpResponseRedirect('/contact/thanks/')
+#     else:
+#         # In reality we'd use a form class
+#         # to get proper validation errors.
+#         return HttpResponse('Make sure all fields are entered and valid.')
 
 
 def arizakayit(request, **kwargs):
     if request.method == 'POST':
         form = ArizaGönder(request.POST)
+        form1 = ArizaGönder()
         firmaform = FirmaGönder(request.POST or None)
         if firmaform.is_valid():
             FirmaName1 = firmaform.cleaned_data['FirmaName']
             print(FirmaName1)
             if FirmaName1 == None and form.is_valid():
                 form.save()
+                form.bizeMail()
+                form.karsiMail()
                 messages.success(
                     request, "Firma Girilmeden Gönderildi")
                 return redirect("tickets")
@@ -54,6 +58,8 @@ def arizakayit(request, **kwargs):
                 form1 = form.save(commit=False)
                 form1.firma_bilgi_id = ids[0]
                 form1.save()
+                form.bizeMail()
+                form.karsiMail()
                 messages.success(
                     request, "Sistemde Kayıtlı olan Bir Firma Adına Arıza Gönderildi")
                 return redirect("tickets")
@@ -66,6 +72,8 @@ def arizakayit(request, **kwargs):
                 print(ids[0])
                 form1.firma_bilgi_id = ids[0]
                 form1.save()
+                form.bizeMail()
+                form.karsiMail()
                 #send_mail("Ariza Mesajı alındı", message, from_email, ['admin@example.com'])
                 messages.success(
                     request, "Yeni Bir Firma Adına Arıza talebi gönderildi")

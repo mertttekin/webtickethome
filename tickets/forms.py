@@ -12,8 +12,10 @@ from tickets import models
 from tickets.models import Ariza, Firma, Paylasim, Comment
 from ckeditor.fields import RichTextField
 from django.db import models
-
-
+from django.core.mail import send_mail
+from django import forms
+from django.conf import settings
+from django.core.mail import EmailMessage
 # class ProductCreateForm(forms.Form):
 #     göndericiAdi= forms.CharField(label='Your name',max_length=100)
 #     gönderiKonu= forms.CharField()
@@ -23,6 +25,7 @@ from django.db import models
 #     yazılımUrunumu= forms.BooleanField(required=False)
 #     cameUrunumu= forms.BooleanField(required=False)
 #     sssmi= forms.BooleanField(required=False)
+
 
 class ArizaGönder(forms.ModelForm):
     class Meta:
@@ -61,6 +64,73 @@ class ArizaGönder(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArizaGönder, self).__init__(*args, **kwargs)
         self.fields['gelenAciklama'].required = True
+
+    def get_info(self):
+        """
+        Method that returns formatted information
+        :return: subject, msg
+        """
+        # Cleaned data
+
+        cl_data = super().clean()
+
+        gelenAdSoyad = cl_data.get('gelenAdSoyad')
+        gelenMail = cl_data.get('gelenMail')
+        gelenKonu = cl_data.get('gelenKonu')
+        print(gelenKonu)
+
+        msg = f' Ad Soyad: {gelenAdSoyad}\n Mail: {gelenMail} \n Konu: '
+        msg += f'"{gelenKonu}"\n\n Mesaj:'
+        msg += cl_data.get('gelenAciklama')
+
+        return gelenKonu, msg
+
+    def bizeMail(self):
+
+        gelenKonu, msg = self.get_info()
+        print(gelenKonu)
+        send_mail(
+            gelenKonu,
+            message=msg,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[settings.RECIPIENT_ADDRESS],
+            fail_silently=True,
+        )
+
+    def get_inf(self):
+        """
+        Method that returns formatted information
+        :return: subject, msg
+        """
+        # Cleaned data
+
+        cl_data = super().clean()
+
+        gelenAdSoyad = cl_data.get('gelenAdSoyad')
+        gelenMail = cl_data.get('gelenMail')
+        gelenKonu = cl_data.get('gelenKonu')
+        print(gelenKonu)
+
+        msg2 = f'Merhaba {gelenAdSoyad},\n\n'
+        msg2 += f'Aksiyon Teknoloji ariza bilgidirim formunuz alınmıştır.\n\n'
+        msg2 += f'Sizelere en kısa sürede dönüş yapacağız \n\n'
+        msg2 += f'Saygılarımızla'
+
+        return msg2, gelenMail
+
+    def karsiMail(self):
+
+        msg2, gelenMail,  = self.get_inf()
+        subject = "Aksiyon Teknoloji Teknik"
+        send_mail(
+            subject,
+            message=msg2,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[gelenMail],
+            fail_silently=True,
+        )
+
+########################## MAil ###################
 
 
 class ProductCreateForm(forms.ModelForm):
