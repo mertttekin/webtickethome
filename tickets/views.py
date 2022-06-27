@@ -17,6 +17,7 @@ from django.contrib import messages
 from django.core.mail import BadHeaderError, send_mail
 from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
+from django.contrib.postgres.search import SearchVector
 
 # def send_email(request):
 #     subject = request.POST.get('subject', '')
@@ -362,8 +363,11 @@ def sss(request):
 
 
 def post_search(request):
-
-    return render(request, 'arama.html')
+    search_data = request.POST.get('search_data')
+    data = {
+        "aranan": Paylasim.objects.filter(gönderiDurumu=True, gönderiKonu__contains=search_data),
+    }
+    return render(request, 'arama.html', data)
 
 
 def paylasimSil(request, slug):

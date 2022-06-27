@@ -31,8 +31,9 @@
         </ul>
 
         <ul class="mx-2 navbar-nav ms-auto mb-2 mb-lg-0">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Ara" aria-label="Search">
+          <form action="{% url 'post_search' %}" method="post" class="d-flex" role="search">
+            {% csrf_token %} 
+            <input name="search_data" class="form-control me-2" type="search" placeholder="Ara" aria-label="Search">
             <button class="btn btn-outline-light" type="submit">Arama</button>
           </form>
           {% if user.is_authenticated %}

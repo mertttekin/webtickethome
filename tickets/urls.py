@@ -29,6 +29,7 @@ urlpatterns = [
     path('paylasimgir/sil/<slug:slug>', views.paylasimSil, name="paylasimSil"),
     path('ariza/detaysil/<int:id>',
          views.yorumSil, name="yorumSil"),
+    path('paylasim/search/', views.post_search, name="post_search"),
 
 ]
 # path(url,foksiyon,path ismi)
