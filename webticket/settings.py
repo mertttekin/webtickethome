@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from os import getenv
 from pathlib import Path
 import environ
+import os
+
 
 env = environ.Env()
 environ.Env.read_env()
@@ -87,6 +89,7 @@ INSTALLED_APPS = [
     'tickets',
     'ckeditor',
     'api',
+    'phonenumbers',
 ]
 
 REST_FRAMEWORK = {
@@ -180,8 +183,11 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
 MEDIA_ROOT = BASE_DIR / "uploads"
+
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 MEDIA_URL = "/images/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

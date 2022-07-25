@@ -358,6 +358,7 @@ def sss(request):
     data = {
         "sss": Paylasim.objects.filter(sssmi=True, gönderiDurumu=True),
         "paylasimlarall": Paylasim.objects.all(),
+
     }
     return render(request, "sss.html", data)
 
@@ -366,6 +367,15 @@ def post_search(request):
     search_data = request.POST.get('search_data')
     data = {
         "aranan": Paylasim.objects.filter(gönderiDurumu=True, gönderiKonu__contains=search_data),
+        "paylasimlarall": Paylasim.objects.all(),
+    }
+    return render(request, 'arama.html', data)
+
+
+def search_view(request):
+    search_data = request.POST.get('search_data')
+    data = {
+        "aranan": Paylasim.objects.filter(gönderiDurumu=True, gönderiKonu__icontains=search_data),
     }
     return render(request, 'arama.html', data)
 

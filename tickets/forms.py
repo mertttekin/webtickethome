@@ -16,6 +16,9 @@ from django.core.mail import send_mail
 from django import forms
 from django.conf import settings
 from django.core.mail import EmailMessage
+from phonenumber_field.modelfields import PhoneNumberField
+
+
 # class ProductCreateForm(forms.Form):
 #     göndericiAdi= forms.CharField(label='Your name',max_length=100)
 #     gönderiKonu= forms.CharField()
@@ -28,6 +31,7 @@ from django.core.mail import EmailMessage
 
 
 class ArizaGönder(forms.ModelForm):
+
     class Meta:
         model = Ariza
         fields = "__all__"
@@ -43,7 +47,7 @@ class ArizaGönder(forms.ModelForm):
             "gelenKonu": widgets.TextInput(attrs={"class": "form-control", "placeholder": "Kamera Görüntüsü Gelmiyor"}),
             "gelenMail": widgets.EmailInput(attrs={"class": "form-control", "placeholder": "mert.tekin@aksiyonteknoloji.com"}),
             "gelenAdSoyad": widgets.TextInput(attrs={"class": "form-control", "placeholder": "Mert TEKİN"}),
-            "gelenTelefon": widgets.NumberInput(attrs={"class": "form-control", "placeholder": "(216) 999 9559"}),
+            "gelenTelefon": widgets.TextInput(attrs={"class": "form-control", "placeholder": "(216) 999 9559", 'maxlength': '11', }),
             "gelenAciklama": widgets.Textarea(attrs={"class": "form-control", "placeholder": "Açıklama..."}),
 
         }

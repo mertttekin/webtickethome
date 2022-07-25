@@ -58,7 +58,7 @@ class Ariza(models.Model):
     gelenMail = models.CharField(max_length=50)
     #gelenFoto = models.ImageField(upload_to="Arizas")
     gelenAdSoyad = models.CharField(max_length=50)
-    gelenTelefon = models.CharField(max_length=10)
+    gelenTelefon = models.IntegerField()
     gelenKonu = models.CharField(max_length=50)
     gelenAciklama = models.TextField(max_length=500)
     slug = models.SlugField(null=True,
